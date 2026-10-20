@@ -221,8 +221,8 @@ const T = {
   who: ["Ai đang kể chuyện?", "Who is telling the story?"],
   addPerson: ["+ Thêm người kể", "+ Add a storyteller"],
   edit: ["Sửa", "Edit"],
-  nameLabel: ["Tên người kể", "Storyteller's name"],
-  addrLabel: ["Câu hỏi tiếng Việt sẽ gọi người kể là", "The Vietnamese questions will call this person"],
+  nameLabel: ["Tên của bạn", "Your name"],
+  addrLabel: ["Câu hỏi tiếng Việt nên gọi bạn là gì?", "What should the Vietnamese questions call you?"],
   addrHint: ["Ví dụ: Bà, Mẹ, Anh, Chị, Bạn", "For example Bà (grandmother), Mẹ (mother), Anh, Chị, or Bạn (neutral)"],
   savePerson: ["Lưu", "Save"],
   cancel: ["Hủy", "Cancel"],
@@ -273,24 +273,24 @@ const ADDR = ["Bạn", "Bà", "Ông", "Ngoại", "Nội", "Mẹ", "Má", "Ba", "
 const TOPICS = [
   { id: "child", name: ["Tuổi thơ ở Việt Nam", "Childhood in Vietnam"], qs: [
     ["{X} sinh ra ở đâu? Làng quê hay thành phố nơi đó ra sao?", "Where were you born? What was that village or town like?"],
-    ["{X} hãy kể về ngôi nhà nơi {x} lớn lên. Nhà trông như thế nào, có những âm thanh và mùi hương gì?", "Tell about the house you grew up in. What did it look, sound and smell like?"],
+    ["{X} hãy kể về ngôi nhà nơi {x} lớn lên. Nhà trông như thế nào, có những âm thanh và mùi hương gì?", "Tell us about the house you grew up in. What did it look, sound and smell like?"],
     ["Cha mẹ của {x} là người như thế nào? Cha mẹ làm nghề gì?", "What were your parents like? What work did they do?"],
-    ["{X} có nhớ ông bà của {x} không? Hãy kể về ông bà.", "Do you remember your grandparents? Tell about them."],
+    ["{X} có nhớ ông bà của {x} không? Hãy kể về ông bà.", "Do you remember your grandparents? Tell us about them."],
     ["Trong nhà {x} có mấy anh chị em? Ai thân với {x} nhất?", "How many brothers and sisters did you have? Who were you closest to?"],
     ["Hồi nhỏ {x} hay chơi những trò gì, chơi với ai?", "What games did you play as a child, and with whom?"],
-    ["Một ngày bình thường hồi nhỏ của {x} bắt đầu và kết thúc như thế nào?", "What was an ordinary day like when you were little, from morning to night?"],
+    ["Một ngày bình thường hồi nhỏ của {x} bắt đầu và kết thúc như thế nào?", "How did a typical day begin and end for you as a child?"],
     ["Hồi đi học của {x} như thế nào? {X} còn nhớ thầy cô hay bạn bè nào không?", "What was school like for you? Do you remember a teacher or a friend?"],
-    ["{X} hãy kể về ngày Tết hồi {x} còn nhỏ. Cả nhà làm gì, ăn gì?", "Tell about Tết when you were young. What did your family do and eat?"],
+    ["{X} hãy kể về ngày Tết hồi {x} còn nhỏ. Cả nhà làm gì, ăn gì?", "Tell us about Tết when you were young. What did your family do and eat?"],
     ["Món ăn nào làm {x} nhớ nhà nhất? Ai là người nấu món đó?", "Which food reminds you most of home? Who used to cook it?"],
-    ["{X} hãy kể về cái chợ gần nhà ngày xưa. Ở đó bán những gì?", "Tell about the market near your home. What did they sell?"],
+    ["{X} hãy kể về cái chợ gần nhà ngày xưa. Ở đó bán những gì?", "Tell us about the market near your home. What did they sell?"],
     ["Hồi nhỏ, kỷ niệm nào làm {x} vui nhất, hay sợ nhất?", "What was your happiest, or scariest, memory as a child?"]
   ]},
   { id: "young", name: ["Tuổi trẻ ở Việt Nam", "Growing up in Vietnam"], qs: [
     ["Lúc còn trẻ, {x} mơ ước sau này sẽ làm gì?", "When you were young, what did you dream of becoming?"],
     ["Công việc đầu tiên của {x} là gì? {X} được trả lương bao nhiêu?", "What was your first job? How much were you paid?"],
     ["{X} đã gặp người bạn đời như thế nào?", "How did you meet your husband, wife or partner?"],
-    ["{X} hãy kể về ngày cưới của mình.", "Tell about your wedding day."],
-    ["{X} hãy kể về lúc đứa con đầu lòng chào đời.", "Tell about the day your first child was born."],
+    ["{X} hãy kể về ngày cưới của mình.", "Tell us about your wedding day."],
+    ["{X} hãy kể về lúc đứa con đầu lòng chào đời.", "Tell us about the day your first child was born."],
     ["Ngày xưa {x} thích nghe bài hát nào, ca sĩ nào? {X} hát thử một câu được không?", "Which songs and singers did you love back then? Can you sing a line?"],
     ["{X} còn nhớ gì về những năm chiến tranh? Gia đình {x} đã trải qua những gì?", "What do you remember about the war years? What did your family go through?"],
     ["Tháng Tư năm 1975, {x} đang ở đâu và đã thấy những gì?", "Where were you in April 1975, and what did you see?"],
@@ -300,32 +300,32 @@ const TOPICS = [
     ["Lần đầu tiên {x} nghĩ đến chuyện rời Việt Nam là khi nào? Vì sao?", "When did you first think about leaving Vietnam, and why?"],
     ["Ai đi cùng {x}, và ai phải ở lại?", "Who left with you, and who stayed behind?"],
     ["{X} mang theo những gì? Phải bỏ lại những gì?", "What did you take with you? What did you have to leave behind?"],
-    ["{X} hãy kể về chuyến đi. {X} đi bằng cách nào, mất bao lâu?", "Tell about the journey. How did you travel, and how long did it take?"],
+    ["{X} hãy kể về chuyến đi. {X} đi bằng cách nào, mất bao lâu?", "Tell us about the journey. How did you travel, and how long did it take?"],
     ["{X} có ở trại tị nạn hay nơi nào để chờ đợi không? Cuộc sống ở đó ra sao?", "Did you stay in a refugee camp or somewhere else while you waited? What was life like there?"],
     ["Lúc rời đi, hình ảnh cuối cùng về quê hương mà {x} còn nhớ là gì?", "As you left, what is the last picture of home you remember?"]
   ]},
   { id: "usa", name: ["Đến Mỹ", "Arriving in America"], qs: [
-    ["{X} hãy kể về ngày đầu tiên đến Mỹ. Điều gì làm {x} ngạc nhiên nhất?", "Tell about your first day in America. What surprised you most?"],
+    ["{X} hãy kể về ngày đầu tiên đến Mỹ. Điều gì làm {x} ngạc nhiên nhất?", "Tell us about your first day in America. What surprised you most?"],
     ["{X} đến thành phố nào đầu tiên? Ai đã giúp đỡ gia đình {x}?", "Which city did you arrive in first? Who helped your family?"],
     ["Căn nhà đầu tiên của {x} ở Mỹ trông như thế nào?", "What was your first home in America like?"],
     ["Công việc đầu tiên ở Mỹ của {x} là gì?", "What was your first job in America?"],
     ["Học tiếng Anh có khó với {x} không? Có chuyện vui nào về tiếng Anh không?", "Was learning English hard for you? Do you have a funny story about it?"],
     ["{X} đã tìm được chợ Việt, nhà thờ, chùa hay người Việt ở gần như thế nào?", "How did you find Vietnamese markets, a church or temple, or other Vietnamese families nearby?"],
     ["Mùa đông đầu tiên, hay lần đầu {x} thấy tuyết, ra sao?", "What was your first winter, or your first snow, like?"],
-    ["{X} hãy kể về ngày {x} trở thành công dân Mỹ.", "Tell about the day you became a U.S. citizen."],
+    ["{X} hãy kể về ngày {x} trở thành công dân Mỹ.", "Tell us about the day you became a U.S. citizen."],
     ["{X} có về thăm Việt Nam không? Quê hương đã thay đổi như thế nào?", "Have you gone back to visit Vietnam? How had it changed?"]
   ]},
   { id: "wisdom", name: ["Cuộc đời và lời dặn", "Life and wisdom"], qs: [
     ["Điều gì làm {x} tự hào nhất trong cuộc đời?", "What are you proudest of in your life?"],
     ["Thời gian khó khăn nhất là khi nào, và {x} đã vượt qua như thế nào?", "What was your hardest time, and how did you get through it?"],
     ["{X} nhớ điều gì nhất về Việt Nam?", "What do you miss most about Vietnam?"],
-    ["{X} hãy chỉ cách nấu một món ăn của gia đình.", "Teach how to cook one of your family's dishes."],
+    ["{X} hãy chỉ cách nấu một món ăn của gia đình.", "Teach us how to cook one of your family's dishes."],
     ["Có câu ca dao, tục ngữ nào mà {x} luôn ghi nhớ không? Vì sao?", "Is there a proverb or folk verse you always remember? Why?"],
     ["Truyền thống nào của gia đình mà {x} muốn con cháu giữ gìn?", "Which family traditions do you hope the next generations keep?"],
     ["{X} muốn nhắn nhủ gì với con cháu sau này?", "What would you like to tell the generations after you?"]
   ]},
   { id: "free", name: ["Chuyện khác", "Any story"], qs: [
-    ["{X} muốn kể chuyện gì cũng được.", "Tell any story you would like to share."]
+    ["{X} muốn kể chuyện gì cũng được.", "Tell us any story you would like to share."]
   ]}
 ];
 const PROMPTS = new Map();
@@ -423,7 +423,11 @@ $("personForm").onsubmit = e => {
 };
 
 /* ---------- prompts ---------- */
-function fill(s, addr) { return s.replaceAll("{X}", addr).replaceAll("{x}", addr.toLowerCase()); }
+// Kinship terms (Bà, Mẹ, Anh...) are also third-person words in Vietnamese, so open with "{X} ơi," to make the direct address unmistakable.
+function fill(s, addr) {
+  const out = s.replaceAll("{X}", addr).replaceAll("{x}", addr.toLowerCase());
+  return addr === "Bạn" ? out : `${addr} ơi, ${out.charAt(0).toLowerCase()}${out.slice(1)}`;
+}
 function promptText(q, addr) { return state.lang === "en" ? q[1] : fill(q[0], addr); }
 function current() { const tp = TOPICS[state.topic] || TOPICS[0]; const q = tp.qs[state.q % tp.qs.length]; return { tp, q }; }
 function toldSet() { return new Set(state.recs.filter(r => r.meta.speakerId === state.speaker).map(r => r.meta.promptId)); }
