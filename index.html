@@ -3,10 +3,10 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Lora:ital,wght@1,400;1,500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-/* Layout: one calm column, a single question at a time, one giant record button. Sized for older eyes and hands. */
+/* Layout: one calm column. Who is telling, one question, one giant record button, then the story tree. Sized for older eyes and hands. */
 :root {
   --bg: #edf1ec;
   --card: #fbfcf9;
@@ -20,7 +20,6 @@
   --gold: #a87a1c;
   --ok: #2e7a4a;
   --font-ui: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
-  --font-en: "Lora", Georgia, "Times New Roman", serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -43,115 +42,128 @@ body {
   padding-block: 16px 48px;
 }
 .wrap { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
-.en { font-family: var(--font-en); font-style: italic; color: var(--muted); }
-[data-lang="vi"] .en { display: none; }
 button { font: inherit; color: inherit; cursor: pointer; }
-button:focus-visible, .chip:focus-visible, select:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
 header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 header h1 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
-header h1 .en { display: block; font-size: 17px; font-weight: 400; letter-spacing: 0; }
-.icon-btn { background: transparent; border: 2px solid var(--line); border-radius: 14px; padding: 8px 14px; font-size: 16px; color: var(--muted); white-space: nowrap; }
+.lang-btn { border: 2px solid var(--jade); background: var(--card); color: var(--jade); border-radius: 999px; padding: 10px 18px; font-size: 18px; font-weight: 700; white-space: nowrap; }
 
-.settings { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 14px; font-size: 17px; }
-.settings label { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; }
-.settings select { font: inherit; font-size: 18px; padding: 8px 12px; border-radius: 10px; border: 2px solid var(--line); background: var(--bg); color: var(--ink); }
-.settings p { margin: 0; color: var(--muted); font-size: 15px; }
-
-.topics { display: flex; flex-wrap: wrap; gap: 10px; }
-.chip { border: 2px solid var(--line); background: var(--card); border-radius: 999px; padding: 10px 18px; font-size: 18px; font-weight: 500; line-height: 1.2; text-align: left; }
-.chip .en { display: block; font-size: 14px; font-weight: 400; }
+.label { font-size: 15px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; font-weight: 500; margin: 0 0 8px; }
+.row-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { border: 2px solid var(--line); background: var(--card); border-radius: 999px; padding: 10px 18px; font-size: 18px; font-weight: 500; line-height: 1.2; }
 .chip[aria-pressed="true"] { background: var(--jade); border-color: var(--jade); color: var(--card); }
-.chip[aria-pressed="true"] .en { color: var(--card); opacity: .85; }
+.chip.add { border-style: dashed; color: var(--jade); }
+.chip.ghost { border-color: transparent; background: transparent; color: var(--jade); text-decoration: underline; padding-inline: 8px; }
+
+.person-form { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 14px; font-size: 17px; margin-top: 12px; }
+.person-form label { display: flex; flex-direction: column; gap: 6px; }
+.person-form input, .person-form select { font: inherit; font-size: 19px; padding: 10px 12px; border-radius: 10px; border: 2px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; }
+.person-form .hint-sm { font-size: 14px; color: var(--muted); }
 
 .prompt { background: var(--card); border-radius: 24px; padding: 26px 24px 20px; display: flex; flex-direction: column; gap: 14px; border: 2px solid var(--line); }
-.prompt-meta { display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
+.prompt-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 15px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
 .done-tag { color: var(--ok); text-transform: none; letter-spacing: 0; font-size: 16px; }
-.prompt-vi { font-size: clamp(26px, 6.4vw, 34px); font-weight: 500; line-height: 1.32; margin: 0; text-wrap: pretty; }
-.prompt-en { font-size: 20px; margin: 0; line-height: 1.4; }
+.reply-banner { background: var(--jade-soft); border-radius: 14px; padding: 10px 14px; font-size: 17px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.prompt-text { font-size: clamp(26px, 6.4vw, 34px); font-weight: 500; line-height: 1.32; margin: 0; text-wrap: pretty; }
 .prompt-nav { display: flex; gap: 10px; margin-top: 6px; }
 .prompt-nav button { flex: 1; border: 2px solid var(--line); background: var(--bg); border-radius: 16px; padding: 14px 10px; font-size: 19px; font-weight: 500; line-height: 1.2; }
-.prompt-nav button .en { display: block; font-size: 14px; font-weight: 400; }
 .prompt-nav button.primary { background: var(--jade-soft); border-color: var(--jade); }
 
 .recorder { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 8px 0; }
 .rec-ring { position: relative; width: 220px; height: 220px; max-width: 100%; display: grid; place-items: center; }
 .rec-ring::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--lacquer); opacity: .16; transform: scale(var(--lvl, 0.82)); transition: transform 90ms linear; }
-.rec-btn { position: relative; width: 180px; height: 180px; border-radius: 50%; border: none; background: var(--lacquer); color: var(--lacquer-ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 24px; font-weight: 700; line-height: 1.15; box-shadow: 0 6px 0 color-mix(in srgb, var(--lacquer) 60%, #000); }
+.rec-btn { position: relative; width: 180px; height: 180px; border-radius: 50%; border: none; background: var(--lacquer); color: var(--lacquer-ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 26px; font-weight: 700; line-height: 1.15; box-shadow: 0 6px 0 color-mix(in srgb, var(--lacquer) 60%, #000); }
 .rec-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 color-mix(in srgb, var(--lacquer) 60%, #000); }
-.rec-btn .en { color: inherit; opacity: .9; font-size: 16px; font-weight: 400; }
 .rec-btn .glyph { width: 34px; height: 34px; border-radius: 50%; background: var(--lacquer-ink); }
 .recording .rec-btn .glyph { border-radius: 6px; }
 .timer { font-size: 44px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
-.hint { text-align: center; font-size: 18px; color: var(--muted); max-width: 30ch; margin: 0; }
-.hint .en { display: block; font-size: 16px; }
+.hint { text-align: center; font-size: 19px; color: var(--muted); max-width: 30ch; margin: 0; }
 .live-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--lacquer); margin-right: 8px; animation: blink 1.2s infinite; vertical-align: middle; }
 @keyframes blink { 50% { opacity: .2; } }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } .rec-ring::before { transition: none; } }
 .text-link { background: none; border: none; color: var(--jade); text-decoration: underline; font-size: 17px; padding: 6px; }
 
-.saved { background: var(--jade-soft); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 12px; align-items: stretch; text-align: center; }
-.saved strong { font-size: 24px; color: var(--ok); }
-.saved .row { display: flex; gap: 10px; flex-wrap: wrap; }
-.big-btn { flex: 1 1 160px; border: 2px solid var(--jade); background: var(--card); border-radius: 16px; padding: 14px; font-size: 20px; font-weight: 500; line-height: 1.2; }
-.big-btn .en { display: block; font-size: 14px; font-weight: 400; }
+.panel { background: var(--jade-soft); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px; text-align: center; }
+.panel h3 { margin: 0; font-size: 24px; }
+.panel h3.ok { color: var(--ok); }
+.panel audio { width: 100%; }
+.panel .row { display: flex; gap: 10px; flex-wrap: wrap; }
+.big-btn { flex: 1 1 160px; border: 2px solid var(--jade); background: var(--card); border-radius: 16px; padding: 16px 14px; font-size: 21px; font-weight: 500; line-height: 1.2; }
 .big-btn.solid { background: var(--jade); color: var(--card); }
-.big-btn.solid .en { color: var(--card); opacity: .85; }
+.big-btn.danger { border-color: var(--lacquer); color: var(--lacquer); }
+.big-btn.danger.solid { background: var(--lacquer); color: var(--lacquer-ink); }
 
-section.library { display: flex; flex-direction: column; gap: 12px; }
-.lib-head { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; border-top: 2px solid var(--line); padding-top: 18px; }
+section.library { display: flex; flex-direction: column; gap: 14px; border-top: 2px solid var(--line); padding-top: 18px; }
+.lib-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .lib-head h2 { margin: 0; font-size: 24px; }
-.lib-head h2 .en { display: block; font-size: 16px; font-weight: 400; }
 .note { font-size: 15px; color: var(--muted); margin: 0; }
-.note .en { display: block; }
 .empty { background: var(--card); border: 2px dashed var(--line); border-radius: 18px; padding: 20px; color: var(--muted); font-size: 17px; }
-.empty .en { display: block; }
-ul.recs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-.rec { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-.rec-top { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
-.rec-topic { font-weight: 500; color: var(--jade); text-transform: uppercase; letter-spacing: .05em; }
-.rec-q { font-size: 18px; margin: 0; min-width: 0; overflow-wrap: anywhere; }
-.rec-q .en { display: block; font-size: 15px; }
+details.branch { background: var(--card); border: 2px solid var(--line); border-radius: 18px; }
+details.branch > summary { list-style: none; padding: 14px 16px; font-weight: 700; font-size: 19px; display: flex; justify-content: space-between; gap: 10px; cursor: pointer; }
+details.branch > summary::-webkit-details-marker { display: none; }
+details.branch > summary > span:first-child::before { content: "▸"; color: var(--jade); margin-right: 8px; }
+details.branch[open] > summary > span:first-child::before { content: "▾"; }
+details.branch > summary .count { font-weight: 400; color: var(--muted); font-size: 15px; white-space: nowrap; }
+.branch-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 16px; }
+.q-block { display: flex; flex-direction: column; gap: 10px; }
+.q-title { font-size: 17px; margin: 0; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+ul.tree { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+ul.tree ul.tree { margin-top: 10px; margin-left: 14px; padding-left: 14px; border-left: 3px solid var(--jade-soft); }
+.rec { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.rec-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+.who { font-weight: 700; color: var(--jade); font-size: 16px; }
+.who small { font-weight: 400; color: var(--muted); }
+.rec-q { font-size: 16px; margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .rec audio { width: 100%; height: 44px; }
 .rec-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.small-btn { border: 2px solid var(--line); background: var(--bg); border-radius: 12px; padding: 8px 14px; font-size: 16px; }
+.small-btn { border: 2px solid var(--line); background: var(--card); border-radius: 12px; padding: 8px 14px; font-size: 16px; }
+.small-btn.voice { border-color: var(--jade); color: var(--jade); font-weight: 500; }
 .small-btn.danger { color: var(--lacquer); border-color: color-mix(in srgb, var(--lacquer) 40%, var(--line)); }
 .confirm { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 16px; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 14px; font-size: 17px; max-width: calc(100% - 32px); text-align: center; z-index: 20; }
-.sample-badge { font-size: 13px; color: var(--gold); border: 1px solid var(--gold); border-radius: 6px; padding: 1px 6px; text-transform: none; letter-spacing: 0; }
 </style>
 
-<div class="wrap" id="app" data-lang="both">
+<div class="wrap" id="app">
   <header>
-    <h1>Kể Chuyện Ngày Xưa <span class="en">Stories from Long Ago</span></h1>
-    <button class="icon-btn" id="settingsBtn" aria-expanded="false">Cài đặt · Settings</button>
+    <h1 data-t="title"></h1>
+    <button class="lang-btn" id="langBtn" lang="en"></button>
   </header>
 
-  <div class="settings" id="settings" hidden>
-    <label for="addr">Gọi người kể là · Address her as
-      <select id="addr">
-        <option>Bà</option><option>Ngoại</option><option>Nội</option><option>Mẹ</option>
-        <option>Má</option><option>Bác</option><option>Cô</option><option>Dì</option>
-      </select>
-    </label>
-    <label for="langSel">Ngôn ngữ · Language
-      <select id="langSel">
-        <option value="both">Tiếng Việt + English</option>
-        <option value="vi">Chỉ tiếng Việt</option>
-      </select>
-    </label>
-    <p>These settings are for the family helper. Recordings are kept in this browser on this device until you save them. Use "Save all to device" after each sitting.</p>
-  </div>
+  <section aria-labelledby="whoLabel">
+    <p class="label" id="whoLabel" data-t="who"></p>
+    <div class="row-wrap" id="people"></div>
+    <form class="person-form" id="personForm" hidden>
+      <label for="pName"><span data-t="nameLabel"></span>
+        <input id="pName" autocomplete="off" required maxlength="40">
+      </label>
+      <label for="pAddr"><span data-t="addrLabel"></span>
+        <select id="pAddr"></select>
+        <span class="hint-sm" data-t="addrHint"></span>
+      </label>
+      <div class="row-wrap">
+        <button class="big-btn solid" type="submit" data-t="savePerson"></button>
+        <button class="big-btn" type="button" id="pCancel" data-t="cancel"></button>
+      </div>
+    </form>
+  </section>
 
-  <nav class="topics" id="topics" aria-label="Chủ đề · Topics"></nav>
+  <section aria-labelledby="topicLabel">
+    <p class="label" id="topicLabel" data-t="topics"></p>
+    <nav class="row-wrap" id="topics"></nav>
+  </section>
 
   <article class="prompt" aria-live="polite">
-    <div class="prompt-meta"><span id="qCount"></span><span id="qDone" class="done-tag" hidden>✓ Đã kể <span class="en">· told</span></span></div>
-    <p class="prompt-vi" id="qVi"></p>
-    <p class="prompt-en en" id="qEn"></p>
+    <div class="reply-banner" id="replyBanner" hidden>
+      <span id="replyText"></span>
+      <button class="small-btn" id="replyCancel" data-t="cancel"></button>
+    </div>
+    <div class="prompt-meta"><span id="qCount"></span><span id="qDone" class="done-tag" hidden></span></div>
+    <p class="prompt-text" id="qText"></p>
     <div class="prompt-nav">
-      <button id="prevBtn">← Câu trước <span class="en">Previous</span></button>
-      <button id="nextBtn" class="primary">Câu khác → <span class="en">Another question</span></button>
+      <button id="prevBtn" data-t="prev"></button>
+      <button id="nextBtn" class="primary" data-t="next"></button>
     </div>
   </article>
 
@@ -159,109 +171,191 @@ ul.recs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction
     <div class="rec-ring" id="ring">
       <button class="rec-btn" id="recBtn">
         <span class="glyph" aria-hidden="true"></span>
-        <span id="recLabel">Ghi âm</span>
-        <span class="en" id="recLabelEn">Record</span>
+        <span id="recLabel"></span>
       </button>
     </div>
     <div class="timer" id="timer" hidden>0:00</div>
-    <p class="hint" id="hint">Bấm nút đỏ rồi bắt đầu kể. <span class="en">Tap the red button, then start talking.</span></p>
-    <button class="text-link" id="pickFile" hidden>Chọn tệp ghi âm có sẵn · Choose an existing recording</button>
+    <p class="hint" id="hint"></p>
+    <button class="text-link" id="pickFile" hidden data-t="pickFile"></button>
     <input type="file" id="captureInput" accept="audio/*" capture hidden>
     <input type="file" id="fileInput" accept="audio/*,video/mp4,video/webm" hidden>
   </div>
 
-  <div class="saved" id="savedPanel" hidden>
-    <strong>✓ Đã lưu <span class="en">Saved</span></strong>
-    <audio id="savedAudio" controls preload="metadata"></audio>
+  <div class="panel" id="reviewPanel" hidden>
+    <h3 data-t="reviewTitle"></h3>
+    <audio id="reviewAudio" controls preload="metadata"></audio>
+    <div class="row" id="reviewActions">
+      <button class="big-btn danger" id="discardBtn" data-t="discard"></button>
+      <button class="big-btn solid" id="keepBtn" data-t="keep"></button>
+    </div>
+    <div class="row" id="discardConfirm" hidden>
+      <p style="flex-basis:100%;margin:0;font-size:19px" data-t="confirmDiscard"></p>
+      <button class="big-btn" id="discardNo" data-t="noKeep"></button>
+      <button class="big-btn danger solid" id="discardYes" data-t="yesDelete"></button>
+    </div>
+  </div>
+
+  <div class="panel" id="savedPanel" hidden>
+    <h3 class="ok">✓ <span data-t="savedTitle"></span></h3>
     <div class="row">
-      <button class="big-btn" id="againBtn">Kể tiếp câu này <span class="en">Add more to this question</span></button>
-      <button class="big-btn solid" id="nextAfterBtn">Câu tiếp theo <span class="en">Next question</span></button>
+      <button class="big-btn" id="againBtn" data-t="again"></button>
+      <button class="big-btn solid" id="nextAfterBtn" data-t="nextQ"></button>
     </div>
   </div>
 
   <section class="library">
     <div class="lib-head">
-      <h2>Chuyện đã kể <span class="en">Recorded stories</span></h2>
-      <button class="big-btn solid" id="saveAllBtn" style="flex:0 1 auto">Lưu tất cả về máy <span class="en">Save all to device (.zip)</span></button>
+      <h2 data-t="libTitle"></h2>
+      <div class="row-wrap" role="group">
+        <button class="chip" id="viewStory" data-t="byStory"></button>
+        <button class="chip" id="viewPerson" data-t="byPerson"></button>
+      </div>
     </div>
-    <p class="note">Mỗi tệp được lưu kèm câu hỏi. <span class="en">Each file is saved with the question it answers, ready for transcription.</span></p>
-    <div class="empty" id="empty">Chưa có chuyện nào. Bấm nút đỏ để kể chuyện đầu tiên. <span class="en">No stories yet. Tap the red button to record the first one.</span></div>
-    <ul class="recs" id="recs"></ul>
+    <p class="note" data-t="libNote"></p>
+    <div class="empty" id="empty" data-t="empty"></div>
+    <div id="tree" style="display:flex;flex-direction:column;gap:12px"></div>
+    <button class="big-btn solid" id="saveAllBtn" data-t="saveAll" style="flex:none"></button>
   </section>
 </div>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
+const T = {
+  title: ["Kể Chuyện Ngày Xưa", "Stories from Long Ago"],
+  langBtn: ["English", "Tiếng Việt"],
+  who: ["Ai đang kể chuyện?", "Who is telling the story?"],
+  addPerson: ["+ Thêm người kể", "+ Add a storyteller"],
+  edit: ["Sửa", "Edit"],
+  nameLabel: ["Tên người kể", "Storyteller's name"],
+  addrLabel: ["Câu hỏi tiếng Việt sẽ gọi người kể là", "The Vietnamese questions will call this person"],
+  addrHint: ["Ví dụ: Bà, Mẹ, Anh, Chị, Bạn", "For example Bà (grandmother), Mẹ (mother), Anh, Chị, or Bạn (neutral)"],
+  savePerson: ["Lưu", "Save"],
+  cancel: ["Hủy", "Cancel"],
+  topics: ["Chủ đề", "Topics"],
+  prev: ["← Câu trước", "← Previous"],
+  next: ["Câu khác →", "Another question →"],
+  told: ["✓ Bạn đã kể câu này", "✓ You've told this one"],
+  record: ["Ghi âm", "Record"],
+  stop: ["Dừng", "Stop"],
+  hintIdle: ["Bấm nút đỏ rồi kể chuyện của bạn.", "Tap the red button, then tell your story."],
+  hintRec: ["Đang ghi âm. Bạn cứ kể thong thả.", "Recording. Take your time."],
+  hintPhone: ["Bấm nút đỏ, điện thoại của bạn sẽ mở máy ghi âm. Ghi xong, bấm Dùng hoặc Lưu.", "Tap the red button to open your phone's recorder. When you finish, tap Use or Save."],
+  pickFile: ["Chọn tệp ghi âm bạn đã có", "Choose a recording you already have"],
+  reviewTitle: ["Nghe lại phần bạn vừa kể", "Listen to what you just recorded"],
+  keep: ["Lưu lại", "Save it"],
+  discard: ["Xóa", "Delete it"],
+  confirmDiscard: ["Bạn muốn xóa bản ghi này?", "Do you want to delete this recording?"],
+  yesDelete: ["Xóa", "Delete"],
+  noKeep: ["Không, giữ lại", "No, keep it"],
+  savedTitle: ["Đã lưu", "Saved"],
+  again: ["Kể thêm câu này", "Add more to this question"],
+  nextQ: ["Câu tiếp theo", "Next question"],
+  libTitle: ["Cây chuyện", "Story tree"],
+  byStory: ["Theo câu chuyện", "By story"],
+  byPerson: ["Theo người kể", "By storyteller"],
+  libNote: ["Chuyện của bạn được giữ trong trình duyệt trên máy này. Sau mỗi lần kể, bạn hãy bấm Lưu tất cả về máy để giữ một bản an toàn.", "Your stories stay in this browser on this device. After each session, tap Save all to this device to keep a safe copy."],
+  empty: ["Chưa có chuyện nào. Bấm nút đỏ để kể chuyện đầu tiên của bạn.", "No stories yet. Tap the red button to tell your first one."],
+  saveAll: ["Lưu tất cả về máy (.zip)", "Save all to this device (.zip)"],
+  addVoice: ["+ Thêm giọng kể", "+ Add a voice"],
+  saveOne: ["Lưu về máy", "Save to device"],
+  del: ["Xóa", "Delete"],
+  deleteStory: ["Xóa chuyện này?", "Delete this story?"],
+  deleted: ["Đã xóa", "Deleted"],
+  savedDevice: ["Đã lưu về máy của bạn", "Saved to your device"],
+  tooShort: ["Bản ghi quá ngắn nên chưa được lưu.", "That recording was too short, so it wasn't saved."],
+  noMic: ["Micrô bị chặn. Bạn hãy cho phép micrô trong cài đặt trình duyệt, hoặc dùng máy ghi âm của điện thoại.", "Your microphone is blocked. Allow it in your browser settings, or use your phone's recorder."],
+  noStore: ["Trình duyệt này không giữ được bản ghi sau khi đóng. Bạn hãy lưu về máy ngay.", "This browser can't keep recordings after it closes. Save them to your device now."],
+  noSaveHere: ["Không thể lưu tệp ở đây.", "Saving files isn't available here."],
+  noZip: ["Không tải được công cụ nén. Bạn hãy lưu từng chuyện một.", "The zip tool didn't load. Save stories one at a time."],
+  replyBanner: ["Bạn đang thêm giọng kể vào câu chuyện của {name}.", "You're adding your voice to {name}'s story."],
+  replyTo: ["trả lời {name}", "responding to {name}"],
+  recs: ["{n} bản ghi", "{n} recordings"],
+  rec1: ["1 bản ghi", "1 recording"],
+  nameRequired: ["Bạn hãy nhập tên.", "Please enter a name."]
+};
+const ADDR = ["Bạn", "Bà", "Ông", "Ngoại", "Nội", "Mẹ", "Má", "Ba", "Bố", "Cô", "Chú", "Dì", "Bác", "Anh", "Chị", "Em", "Con", "Cháu"];
+
 const TOPICS = [
-  { id: "child", vi: "Tuổi thơ ở Việt Nam", en: "Childhood in Vietnam", qs: [
+  { id: "child", name: ["Tuổi thơ ở Việt Nam", "Childhood in Vietnam"], qs: [
     ["{X} sinh ra ở đâu? Làng quê hay thành phố nơi đó ra sao?", "Where were you born? What was that village or town like?"],
-    ["{X} kể cho con nghe về ngôi nhà nơi {x} lớn lên. Nhà trông như thế nào, có những âm thanh và mùi hương gì?", "Tell me about the house you grew up in. What did it look, sound and smell like?"],
+    ["{X} hãy kể về ngôi nhà nơi {x} lớn lên. Nhà trông như thế nào, có những âm thanh và mùi hương gì?", "Tell about the house you grew up in. What did it look, sound and smell like?"],
     ["Cha mẹ của {x} là người như thế nào? Cha mẹ làm nghề gì?", "What were your parents like? What work did they do?"],
-    ["{X} có nhớ ông bà của mình không? {X} kể về ông bà đi.", "Do you remember your own grandparents? Tell me about them."],
-    ["Trong nhà có mấy anh chị em? Ai thân với {x} nhất?", "How many brothers and sisters did you have? Who were you closest to?"],
+    ["{X} có nhớ ông bà của {x} không? Hãy kể về ông bà.", "Do you remember your grandparents? Tell about them."],
+    ["Trong nhà {x} có mấy anh chị em? Ai thân với {x} nhất?", "How many brothers and sisters did you have? Who were you closest to?"],
     ["Hồi nhỏ {x} hay chơi những trò gì, chơi với ai?", "What games did you play as a child, and with whom?"],
     ["Một ngày bình thường hồi nhỏ của {x} bắt đầu và kết thúc như thế nào?", "What was an ordinary day like when you were little, from morning to night?"],
-    ["Hồi đi học như thế nào? {X} còn nhớ thầy cô hay bạn bè nào không?", "What was school like? Do you remember a teacher or a friend?"],
-    ["{X} kể về ngày Tết hồi còn nhỏ. Cả nhà làm gì, ăn gì?", "Tell me about Tết when you were young. What did the family do and eat?"],
+    ["Hồi đi học của {x} như thế nào? {X} còn nhớ thầy cô hay bạn bè nào không?", "What was school like for you? Do you remember a teacher or a friend?"],
+    ["{X} hãy kể về ngày Tết hồi {x} còn nhỏ. Cả nhà làm gì, ăn gì?", "Tell about Tết when you were young. What did your family do and eat?"],
     ["Món ăn nào làm {x} nhớ nhà nhất? Ai là người nấu món đó?", "Which food reminds you most of home? Who used to cook it?"],
-    ["{X} kể về cái chợ gần nhà ngày xưa. Ở đó bán những gì?", "Tell me about the market near your home. What did they sell?"],
-    ["Hồi nhỏ {x} có kỷ niệm nào vui nhất, hay sợ nhất không?", "What was your happiest, or scariest, memory as a child?"]
+    ["{X} hãy kể về cái chợ gần nhà ngày xưa. Ở đó bán những gì?", "Tell about the market near your home. What did they sell?"],
+    ["Hồi nhỏ, kỷ niệm nào làm {x} vui nhất, hay sợ nhất?", "What was your happiest, or scariest, memory as a child?"]
   ]},
-  { id: "young", vi: "Tuổi trẻ ở Việt Nam", en: "Growing up in Vietnam", qs: [
+  { id: "young", name: ["Tuổi trẻ ở Việt Nam", "Growing up in Vietnam"], qs: [
     ["Lúc còn trẻ, {x} mơ ước sau này sẽ làm gì?", "When you were young, what did you dream of becoming?"],
     ["Công việc đầu tiên của {x} là gì? {X} được trả lương bao nhiêu?", "What was your first job? How much were you paid?"],
-    ["{X} đã gặp người bạn đời như thế nào?", "How did you meet your husband or partner?"],
-    ["{X} kể về ngày cưới của mình.", "Tell me about your wedding day."],
-    ["{X} kể về lúc sinh đứa con đầu lòng.", "Tell me about when your first child was born."],
+    ["{X} đã gặp người bạn đời như thế nào?", "How did you meet your husband, wife or partner?"],
+    ["{X} hãy kể về ngày cưới của mình.", "Tell about your wedding day."],
+    ["{X} hãy kể về lúc đứa con đầu lòng chào đời.", "Tell about the day your first child was born."],
     ["Ngày xưa {x} thích nghe bài hát nào, ca sĩ nào? {X} hát thử một câu được không?", "Which songs and singers did you love back then? Can you sing a line?"],
-    ["{X} còn nhớ gì về những năm chiến tranh? Gia đình mình đã trải qua những gì?", "What do you remember about the war years? What did the family go through?"],
+    ["{X} còn nhớ gì về những năm chiến tranh? Gia đình {x} đã trải qua những gì?", "What do you remember about the war years? What did your family go through?"],
     ["Tháng Tư năm 1975, {x} đang ở đâu và đã thấy những gì?", "Where were you in April 1975, and what did you see?"],
-    ["Sau năm 1975, cuộc sống của gia đình thay đổi như thế nào?", "How did life change for the family after 1975?"]
+    ["Sau năm 1975, cuộc sống của gia đình {x} thay đổi như thế nào?", "How did life change for your family after 1975?"]
   ]},
-  { id: "leave", vi: "Rời Việt Nam", en: "Leaving Vietnam", qs: [
+  { id: "leave", name: ["Rời Việt Nam", "Leaving Vietnam"], qs: [
     ["Lần đầu tiên {x} nghĩ đến chuyện rời Việt Nam là khi nào? Vì sao?", "When did you first think about leaving Vietnam, and why?"],
     ["Ai đi cùng {x}, và ai phải ở lại?", "Who left with you, and who stayed behind?"],
     ["{X} mang theo những gì? Phải bỏ lại những gì?", "What did you take with you? What did you have to leave behind?"],
-    ["{X} kể về chuyến đi. Đi bằng cách nào, mất bao lâu?", "Tell me about the journey. How did you travel, and how long did it take?"],
+    ["{X} hãy kể về chuyến đi. {X} đi bằng cách nào, mất bao lâu?", "Tell about the journey. How did you travel, and how long did it take?"],
     ["{X} có ở trại tị nạn hay nơi nào để chờ đợi không? Cuộc sống ở đó ra sao?", "Did you stay in a refugee camp or somewhere else while you waited? What was life like there?"],
     ["Lúc rời đi, hình ảnh cuối cùng về quê hương mà {x} còn nhớ là gì?", "As you left, what is the last picture of home you remember?"]
   ]},
-  { id: "usa", vi: "Đến Mỹ", en: "Arriving in America", qs: [
-    ["{X} kể về ngày đầu tiên đến Mỹ. Điều gì làm {x} ngạc nhiên nhất?", "Tell me about your first day in America. What surprised you most?"],
-    ["{X} đến thành phố nào đầu tiên? Ai đã giúp đỡ gia đình mình?", "Which city did you arrive in first? Who helped the family?"],
-    ["Căn nhà đầu tiên ở Mỹ trông như thế nào?", "What was your first home in America like?"],
+  { id: "usa", name: ["Đến Mỹ", "Arriving in America"], qs: [
+    ["{X} hãy kể về ngày đầu tiên đến Mỹ. Điều gì làm {x} ngạc nhiên nhất?", "Tell about your first day in America. What surprised you most?"],
+    ["{X} đến thành phố nào đầu tiên? Ai đã giúp đỡ gia đình {x}?", "Which city did you arrive in first? Who helped your family?"],
+    ["Căn nhà đầu tiên của {x} ở Mỹ trông như thế nào?", "What was your first home in America like?"],
     ["Công việc đầu tiên ở Mỹ của {x} là gì?", "What was your first job in America?"],
-    ["Học tiếng Anh có khó không? Có chuyện vui nào về tiếng Anh không?", "Was learning English hard? Any funny stories about it?"],
-    ["{X} tìm được chợ Việt, nhà thờ, chùa hay người Việt ở gần như thế nào?", "How did you find Vietnamese markets, a church or temple, or other Vietnamese families nearby?"],
-    ["Mùa đông đầu tiên, hay lần đầu thấy tuyết, ra sao?", "What was your first winter, or your first snow, like?"],
-    ["{X} kể về ngày trở thành công dân Mỹ.", "Tell me about the day you became a U.S. citizen."],
+    ["Học tiếng Anh có khó với {x} không? Có chuyện vui nào về tiếng Anh không?", "Was learning English hard for you? Do you have a funny story about it?"],
+    ["{X} đã tìm được chợ Việt, nhà thờ, chùa hay người Việt ở gần như thế nào?", "How did you find Vietnamese markets, a church or temple, or other Vietnamese families nearby?"],
+    ["Mùa đông đầu tiên, hay lần đầu {x} thấy tuyết, ra sao?", "What was your first winter, or your first snow, like?"],
+    ["{X} hãy kể về ngày {x} trở thành công dân Mỹ.", "Tell about the day you became a U.S. citizen."],
     ["{X} có về thăm Việt Nam không? Quê hương đã thay đổi như thế nào?", "Have you gone back to visit Vietnam? How had it changed?"]
   ]},
-  { id: "wisdom", vi: "Cuộc đời và lời dặn", en: "Life and wisdom", qs: [
+  { id: "wisdom", name: ["Cuộc đời và lời dặn", "Life and wisdom"], qs: [
     ["Điều gì làm {x} tự hào nhất trong cuộc đời?", "What are you proudest of in your life?"],
-    ["Thời gian khó khăn nhất là khi nào, và {x} đã vượt qua như thế nào?", "What was the hardest time, and how did you get through it?"],
+    ["Thời gian khó khăn nhất là khi nào, và {x} đã vượt qua như thế nào?", "What was your hardest time, and how did you get through it?"],
     ["{X} nhớ điều gì nhất về Việt Nam?", "What do you miss most about Vietnam?"],
-    ["{X} dạy con cách nấu một món ăn của gia đình đi.", "Teach me how to cook one of the family's dishes."],
+    ["{X} hãy chỉ cách nấu một món ăn của gia đình.", "Teach how to cook one of your family's dishes."],
     ["Có câu ca dao, tục ngữ nào mà {x} luôn ghi nhớ không? Vì sao?", "Is there a proverb or folk verse you always remember? Why?"],
-    ["Truyền thống nào của gia đình mà {x} muốn con cháu giữ gìn?", "Which family traditions do you hope the children and grandchildren keep?"],
-    ["{X} muốn nhắn nhủ gì với các cháu sau này?", "What would you like to tell your grandchildren and great-grandchildren?"]
+    ["Truyền thống nào của gia đình mà {x} muốn con cháu giữ gìn?", "Which family traditions do you hope the next generations keep?"],
+    ["{X} muốn nhắn nhủ gì với con cháu sau này?", "What would you like to tell the generations after you?"]
   ]},
-  { id: "free", vi: "Chuyện khác", en: "Any story", qs: [
+  { id: "free", name: ["Chuyện khác", "Any story"], qs: [
     ["{X} muốn kể chuyện gì cũng được.", "Tell any story you would like to share."]
   ]}
 ];
-TOPICS.forEach(t => t.qs.forEach((q, i) => { q.id = t.id + "-" + String(i + 1).padStart(2, "0"); }));
+const PROMPTS = new Map();
+TOPICS.forEach(t => t.qs.forEach((q, i) => { q.id = t.id + "-" + String(i + 1).padStart(2, "0"); q.topic = t; PROMPTS.set(q.id, q); }));
 
 const $ = id => document.getElementById(id);
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
+const DEFAULT_PEOPLE = [{ id: "p1", name: "Bà", addr: "Bà" }];
 const state = {
+  lang: store.get("kc.lang2", "vi"),
   topic: store.get("kc.topic", 0), q: store.get("kc.q", 0),
-  addr: store.get("kc.addr", "Bà"), lang: store.get("kc.lang", "both"),
-  recs: [], fallback: false
+  people: store.get("kc.people", null) || DEFAULT_PEOPLE.map(p => ({ ...p, addr: store.get("kc.addr", p.addr) })),
+  speaker: store.get("kc.speaker", "p1"),
+  view: store.get("kc.view", "story"),
+  recs: [], fallback: false, replyTo: null, pending: null, editing: null
 };
+if (!state.people.find(p => p.id === state.speaker)) state.speaker = state.people[0].id;
+const L = () => state.lang === "en" ? 1 : 0;
+const t = (k, vars) => { let s = T[k][L()]; if (vars) for (const v in vars) s = s.replaceAll("{" + v + "}", vars[v]); return s; };
+const person = id => state.people.find(p => p.id === id);
+const speaker = () => person(state.speaker) || state.people[0];
+const nameOf = id => (person(id) || {}).name || "?";
 
 /* ---------- IndexedDB (recordings live in this browser until saved) ---------- */
 let idb = null;
@@ -279,40 +373,97 @@ function tx(mode, fn) {
   return new Promise(res => {
     if (!idb) return res(null);
     try {
-      const t = idb.transaction("recs", mode); const s = t.objectStore("recs");
-      const r = fn(s); t.oncomplete = () => res(r && r.result); t.onerror = () => res(null);
+      const tr = idb.transaction("recs", mode); const s = tr.objectStore("recs");
+      const r = fn(s); tr.oncomplete = () => res(r ? r.result : true); tr.onerror = () => res(null);
     } catch { res(null); }
   });
 }
 
+/* ---------- language ---------- */
+function applyLang() {
+  document.documentElement.lang = state.lang;
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
+  $("langBtn").textContent = t("langBtn");
+  $("langBtn").lang = state.lang === "vi" ? "en" : "vi";
+  document.title = t("title");
+  render(); renderLibrary(); resetRecorderUI();
+}
+$("langBtn").onclick = () => { state.lang = state.lang === "vi" ? "en" : "vi"; store.set("kc.lang2", state.lang); applyLang(); };
+
+/* ---------- storytellers ---------- */
+function savePeople() { store.set("kc.people", state.people); store.set("kc.speaker", state.speaker); }
+function renderPeople() {
+  const box = $("people"); box.innerHTML = "";
+  for (const p of state.people) {
+    const b = document.createElement("button");
+    b.className = "chip"; b.setAttribute("aria-pressed", p.id === state.speaker); b.textContent = p.name;
+    b.onclick = () => { state.speaker = p.id; savePeople(); closePersonForm(); render(); };
+    box.appendChild(b);
+  }
+  const edit = document.createElement("button"); edit.className = "chip ghost"; edit.textContent = t("edit");
+  edit.onclick = () => openPersonForm(speaker());
+  const add = document.createElement("button"); add.className = "chip add"; add.textContent = t("addPerson");
+  add.onclick = () => openPersonForm(null);
+  box.append(edit, add);
+}
+function openPersonForm(p) {
+  state.editing = p ? p.id : "new";
+  $("pAddr").innerHTML = ADDR.map(a => `<option>${a}</option>`).join("");
+  $("pName").value = p ? p.name : "";
+  $("pAddr").value = p ? p.addr : "Bạn";
+  $("personForm").hidden = false; $("pName").focus();
+}
+function closePersonForm() { $("personForm").hidden = true; state.editing = null; }
+$("pCancel").onclick = closePersonForm;
+$("personForm").onsubmit = e => {
+  e.preventDefault();
+  const name = $("pName").value.trim(); if (!name) { toast(t("nameRequired")); return; }
+  if (state.editing === "new") {
+    const id = "p" + Date.now().toString(36);
+    state.people.push({ id, name, addr: $("pAddr").value }); state.speaker = id;
+  } else {
+    const p = person(state.editing); if (p) { p.name = name; p.addr = $("pAddr").value; }
+  }
+  savePeople(); closePersonForm(); render(); renderLibrary();
+};
+
 /* ---------- prompts ---------- */
-function fill(s, addr) { return s.replaceAll("{X}", addr).replaceAll("{x}", addr.toLowerCase() === "bà" ? "bà" : addr.toLowerCase()); }
-function current() { const t = TOPICS[state.topic] || TOPICS[0]; const q = t.qs[state.q % t.qs.length]; return { t, q }; }
+function fill(s, addr) { return s.replaceAll("{X}", addr).replaceAll("{x}", addr.toLowerCase()); }
+function promptText(q, addr) { return state.lang === "en" ? q[1] : fill(q[0], addr); }
+function current() { const tp = TOPICS[state.topic] || TOPICS[0]; const q = tp.qs[state.q % tp.qs.length]; return { tp, q }; }
+function toldSet() { return new Set(state.recs.filter(r => r.meta.speakerId === state.speaker).map(r => r.meta.promptId)); }
+function firstUntold(ti) { const told = toldSet(); const i = TOPICS[ti].qs.findIndex(q => !told.has(q.id)); return i < 0 ? 0 : i; }
+function saveQ() { store.set("kc.q", state.q); store.set("kc.topic", state.topic); }
 function renderTopics() {
   $("topics").innerHTML = "";
-  TOPICS.forEach((t, i) => {
+  TOPICS.forEach((tp, i) => {
     const b = document.createElement("button");
-    b.className = "chip"; b.setAttribute("aria-pressed", i === state.topic);
-    b.innerHTML = `${t.vi}<span class="en">${t.en}</span>`;
-    b.onclick = () => { state.topic = i; state.q = firstUntold(i); store.set("kc.topic", i); saveQ(); hideSaved(); render(); };
+    b.className = "chip"; b.setAttribute("aria-pressed", i === state.topic); b.textContent = tp.name[L()];
+    b.onclick = () => { if (busy()) return; state.topic = i; state.q = firstUntold(i); state.replyTo = null; saveQ(); hidePanels(); render(); };
     $("topics").appendChild(b);
   });
 }
-function firstUntold(ti) { const qs = TOPICS[ti].qs; const told = toldSet(); const i = qs.findIndex(q => !told.has(q.id)); return i < 0 ? 0 : i; }
-function toldSet() { return new Set(state.recs.map(r => r.meta.promptId)); }
-function saveQ() { store.set("kc.q", state.q); }
 function renderPrompt() {
-  const { t, q } = current();
-  $("qVi").textContent = fill(q[0], state.addr);
-  $("qEn").textContent = q[1];
-  $("qCount").textContent = `${t.vi} · ${(state.q % t.qs.length) + 1}/${t.qs.length}`;
-  $("qDone").hidden = !toldSet().has(q.id);
-  $("prevBtn").disabled = t.qs.length < 2; $("nextBtn").disabled = t.qs.length < 2;
+  const { tp, q } = current();
+  $("qText").textContent = promptText(q, speaker().addr);
+  $("qCount").textContent = `${tp.name[L()]} · ${(state.q % tp.qs.length) + 1}/${tp.qs.length}`;
+  $("qDone").hidden = !toldSet().has(q.id); $("qDone").textContent = t("told");
+  const single = tp.qs.length < 2 || !!state.replyTo;
+  $("prevBtn").disabled = single; $("nextBtn").disabled = single;
+  const parent = state.replyTo && state.recs.find(r => r.id === state.replyTo);
+  $("replyBanner").hidden = !parent;
+  if (parent) $("replyText").textContent = t("replyBanner", { name: nameOf(parent.meta.speakerId) });
 }
-function render() { renderTopics(); renderPrompt(); }
-function step(d) { const n = current().t.qs.length; state.q = (state.q + d + n) % n; saveQ(); hideSaved(); renderPrompt(); }
+function render() { renderPeople(); renderTopics(); renderPrompt(); }
+function busy() { return (rec && rec.state === "recording") || !!state.pending; }
+function step(d) { if (busy()) return; const n = current().tp.qs.length; state.q = (state.q + d + n) % n; saveQ(); hidePanels(); renderPrompt(); }
 $("prevBtn").onclick = () => step(-1);
 $("nextBtn").onclick = () => step(1);
+$("replyCancel").onclick = () => { state.replyTo = null; renderPrompt(); };
+function goToPrompt(promptId) {
+  TOPICS.forEach((tp, ti) => { const qi = tp.qs.findIndex(q => q.id === promptId); if (qi >= 0) { state.topic = ti; state.q = qi; } });
+  saveQ();
+}
 
 /* ---------- recording ---------- */
 let rec = null, chunks = [], stream = null, startAt = 0, tick = null, audioCtx = null, raf = null, wakeLock = null;
@@ -322,17 +473,17 @@ function pickMime() {
   return opts.find(m => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) || "";
 }
 function fmt(sec) { sec = Math.max(0, Math.round(sec)); const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s).padStart(2, "0"); }
+function inArtifact() { return !!(window.claude && window.claude.use); }
 
 async function startRecording() {
+  if (state.pending) return;
   if (state.fallback) { $("captureInput").click(); return; }
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) throw new Error("unsupported");
     stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
   } catch (e) {
     useFallback();
-    if (e && e.name === "NotAllowedError" && location.protocol === "https:" && !inArtifact()) {
-      toast("Microphone was blocked. Allow it in the browser settings, or use the phone recorder below.");
-    }
+    if (e && e.name === "NotAllowedError" && !inArtifact()) toast(t("noMic"));
     return;
   }
   const mime = pickMime();
@@ -343,11 +494,11 @@ async function startRecording() {
   rec.onstop = finishRecording;
   rec.start(1000);
   startAt = Date.now();
-  hideSaved();
+  hidePanels();
   $("recorder").classList.add("recording");
-  $("recLabel").textContent = "Dừng"; $("recLabelEn").textContent = "Stop";
+  $("recLabel").textContent = t("stop");
   $("timer").hidden = false; $("timer").textContent = "0:00";
-  $("hint").innerHTML = `<span class="live-dot"></span>Đang ghi âm… cứ kể thong thả. <span class="en">Recording. Take your time.</span>`;
+  $("hint").innerHTML = `<span class="live-dot"></span>`; $("hint").append(t("hintRec"));
   tick = setInterval(() => { $("timer").textContent = fmt((Date.now() - startAt) / 1000); }, 500);
   meter(stream);
   try { wakeLock = await navigator.wakeLock?.request("screen"); } catch {}
@@ -369,10 +520,10 @@ function meter(s) {
   } catch {}
 }
 function stopRecording() { if (rec && rec.state !== "inactive") rec.stop(); }
-async function finishRecording() {
+function finishRecording() {
   clearInterval(tick); cancelAnimationFrame(raf);
   try { audioCtx && audioCtx.close(); } catch {}
-  stream && stream.getTracks().forEach(t => t.stop());
+  stream && stream.getTracks().forEach(tr => tr.stop());
   try { wakeLock && wakeLock.release(); } catch {} wakeLock = null;
   $("ring").style.removeProperty("--lvl");
   const dur = (Date.now() - startAt) / 1000;
@@ -380,21 +531,16 @@ async function finishRecording() {
   const blob = new Blob(chunks, { type });
   rec = null; chunks = [];
   resetRecorderUI();
-  if (blob.size < 1000) { toast("Bản ghi quá ngắn, chưa lưu. · Too short, not saved."); return; }
-  await addRecording(blob, dur, "recorded");
+  if (blob.size < 1000) { toast(t("tooShort")); return; }
+  showReview({ blob, dur, source: "recorded" });
 }
 function resetRecorderUI() {
+  if (rec && rec.state === "recording") { $("recLabel").textContent = t("stop"); return; }
   $("recorder").classList.remove("recording");
   $("timer").hidden = true;
-  if (state.fallback) {
-    $("recLabel").textContent = "Ghi âm"; $("recLabelEn").textContent = "Record with phone";
-    $("hint").innerHTML = `Bấm nút đỏ, điện thoại sẽ mở máy ghi âm. Ghi xong bấm Dùng hoặc Lưu. <span class="en">Tap the red button to open the phone's recorder. When done, tap Use or Save.</span>`;
-  } else {
-    $("recLabel").textContent = "Ghi âm"; $("recLabelEn").textContent = "Record";
-    $("hint").innerHTML = `Bấm nút đỏ rồi bắt đầu kể. <span class="en">Tap the red button, then start talking.</span>`;
-  }
+  $("recLabel").textContent = t("record");
+  $("hint").textContent = t(state.fallback ? "hintPhone" : "hintIdle");
 }
-function inArtifact() { return !!(window.claude && window.claude.use); }
 function useFallback() { state.fallback = true; $("pickFile").hidden = false; resetRecorderUI(); }
 $("recBtn").onclick = () => (rec && rec.state === "recording") ? stopRecording() : startRecording();
 $("pickFile").onclick = () => $("fileInput").click();
@@ -402,18 +548,43 @@ async function onPicked(e) {
   const f = e.target.files && e.target.files[0]; e.target.value = "";
   if (!f) return;
   const dur = await probeDuration(f);
-  await addRecording(f, dur, "imported", f.name);
+  showReview({ blob: f, dur, source: "imported", origName: f.name });
 }
 $("captureInput").onchange = onPicked; $("fileInput").onchange = onPicked;
 function probeDuration(blob) {
   return new Promise(res => {
     const a = document.createElement("audio"); const u = URL.createObjectURL(blob);
-    const done = v => { URL.revokeObjectURL(u); res(isFinite(v) ? v : 0); };
+    let settled = false;
+    const done = v => { if (settled) return; settled = true; URL.revokeObjectURL(u); res(isFinite(v) ? v : 0); };
     a.preload = "metadata"; a.onloadedmetadata = () => done(a.duration); a.onerror = () => done(0);
     setTimeout(() => done(0), 4000); a.src = u;
   });
 }
-window.addEventListener("beforeunload", e => { if (rec && rec.state === "recording") { e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("beforeunload", e => { if (busy()) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- review: play back, then save or delete ---------- */
+function setAudio(el, blob) { if (el.dataset.url) URL.revokeObjectURL(el.dataset.url); el.dataset.url = blob ? URL.createObjectURL(blob) : ""; el.src = el.dataset.url; }
+function showReview(p) {
+  state.pending = p;
+  setAudio($("reviewAudio"), p.blob);
+  $("recorder").hidden = true; $("savedPanel").hidden = true;
+  $("reviewPanel").hidden = false; $("reviewActions").hidden = false; $("discardConfirm").hidden = true;
+  $("reviewPanel").scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "center" });
+}
+function endReview() { $("reviewAudio").pause(); setAudio($("reviewAudio"), null); state.pending = null; $("reviewPanel").hidden = true; $("recorder").hidden = false; }
+$("keepBtn").onclick = async () => {
+  const p = state.pending; if (!p) return;
+  endReview();
+  await addRecording(p.blob, p.dur, p.source, p.origName);
+  $("savedPanel").hidden = false;
+};
+$("discardBtn").onclick = () => { $("reviewActions").hidden = true; $("discardConfirm").hidden = false; };
+$("discardNo").onclick = () => { $("reviewActions").hidden = false; $("discardConfirm").hidden = true; };
+$("discardYes").onclick = () => { endReview(); toast(t("deleted")); };
+function hidePanels() { $("savedPanel").hidden = true; }
+$("againBtn").onclick = () => { hidePanels(); startRecording(); };
+$("nextAfterBtn").onclick = () => { hidePanels(); state.replyTo = null; step(1); window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" }); };
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- library ---------- */
 function extFor(type, name) {
@@ -423,69 +594,153 @@ function extFor(type, name) {
   return "webm";
 }
 function stamp(d) { const p = n => String(n).padStart(2, "0"); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`; }
+function slug(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[đĐ]/g, "d").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "nguoi-ke"; }
 async function addRecording(blob, dur, source, origName) {
-  const { t, q } = current();
+  const { tp, q } = current();
+  const sp = speaker();
   const now = new Date();
   const ext = extFor(blob.type || "", origName);
+  const base = `${stamp(now)}_${q.id}_${slug(sp.name)}`;
   const meta = {
-    id: stamp(now) + "_" + q.id, recordedAt: now.toISOString(), durationSec: Math.round(dur),
-    topicId: t.id, topic_vi: t.vi, topic_en: t.en, promptId: q.id,
-    prompt_vi: fill(q[0], state.addr), prompt_en: q[1], addressTerm: state.addr,
+    id: base, recordedAt: now.toISOString(), durationSec: Math.round(dur),
+    speakerId: sp.id, speakerName: sp.name, parentId: state.replyTo || null,
+    topicId: tp.id, topic_vi: tp.name[0], topic_en: tp.name[1], promptId: q.id,
+    prompt_vi: fill(q[0], sp.addr), prompt_en: q[1], addressTerm: sp.addr,
     mimeType: blob.type || "", source, originalName: origName || null,
-    filename: `${stamp(now)}_${q.id}.${ext}`
+    filename: `${base}.${ext}`
   };
   const item = { id: meta.id, blob, meta };
-  state.recs.unshift(item);
+  state.recs.push(item);
+  state.replyTo = null;
   const ok = await tx("readwrite", s => s.put(item));
-  if (ok === null && !idb) toast("This browser cannot keep recordings after closing. Save them to the device now.");
-  renderLibrary(); renderPrompt(); showSaved(item);
+  if (ok === null) toast(t("noStore"));
+  renderLibrary(); renderPrompt();
 }
-function showSaved(item) {
-  const a = $("savedAudio"); if (a.dataset.url) URL.revokeObjectURL(a.dataset.url);
-  a.dataset.url = URL.createObjectURL(item.blob); a.src = a.dataset.url;
-  $("savedPanel").hidden = false;
-  $("savedPanel").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
-}
-function hideSaved() { $("savedPanel").hidden = true; const a = $("savedAudio"); a.pause(); }
-$("againBtn").onclick = () => { hideSaved(); startRecording(); };
-$("nextAfterBtn").onclick = () => { hideSaved(); step(1); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
 const urls = new Map();
+function recCard(r, showQuestion) {
+  if (!urls.has(r.id)) urls.set(r.id, URL.createObjectURL(r.blob));
+  const m = r.meta; const d = new Date(m.recordedAt);
+  const li = document.createElement("li");
+  const card = document.createElement("div"); card.className = "rec";
+  const parent = m.parentId && state.recs.find(x => x.id === m.parentId);
+  const locale = state.lang === "en" ? "en-US" : "vi-VN";
+  card.innerHTML = `
+    <div class="rec-top"><span class="who"></span><span>${d.toLocaleDateString(locale)} · ${fmt(m.durationSec)}</span></div>
+    ${showQuestion ? '<p class="rec-q"></p>' : ""}
+    <audio controls preload="none"></audio>
+    <div class="rec-actions">
+      <button class="small-btn voice"></button>
+      <button class="small-btn save"></button>
+      <button class="small-btn danger del"></button>
+    </div>`;
+  const who = card.querySelector(".who");
+  who.textContent = person(m.speakerId) ? nameOf(m.speakerId) : (m.speakerName || "?");
+  if (parent && showQuestion) { const sm = document.createElement("small"); sm.textContent = " · " + t("replyTo", { name: nameOf(parent.meta.speakerId) }); who.appendChild(sm); }
+  if (showQuestion) card.querySelector(".rec-q").textContent = questionLabel(m);
+  card.querySelector("audio").src = urls.get(r.id);
+  const [bVoice, bSave, bDel] = card.querySelectorAll(".rec-actions button");
+  bVoice.textContent = t("addVoice"); bSave.textContent = t("saveOne"); bDel.textContent = t("del");
+  bVoice.onclick = () => {
+    if (busy()) return;
+    state.replyTo = r.id; goToPrompt(m.promptId); hidePanels(); render();
+    window.scrollTo({ top: 0, behavior: reduced() ? "auto" : "smooth" });
+  };
+  bSave.onclick = () => saveOne(r);
+  bDel.onclick = () => askDelete(card, r);
+  li.appendChild(card);
+  return li;
+}
+function questionLabel(m) {
+  const q = PROMPTS.get(m.promptId);
+  if (state.lang === "en") return m.prompt_en || (q && q[1]) || "";
+  return m.prompt_vi || (q && fill(q[0], m.addressTerm || "Bạn")) || "";
+}
+function buildTree(list, showQuestion) {
+  const ids = new Set(list.map(r => r.id));
+  const kids = new Map();
+  const roots = [];
+  for (const r of list) {
+    const p = r.meta.parentId;
+    if (p && ids.has(p)) { if (!kids.has(p)) kids.set(p, []); kids.get(p).push(r); } else roots.push(r);
+  }
+  const make = arr => {
+    const ul = document.createElement("ul"); ul.className = "tree";
+    arr.sort((a, b) => a.meta.recordedAt.localeCompare(b.meta.recordedAt));
+    for (const r of arr) { const li = recCard(r, showQuestion); if (kids.has(r.id)) li.appendChild(make(kids.get(r.id))); ul.appendChild(li); }
+    return ul;
+  };
+  return make(roots);
+}
+function branch(title, count, open) {
+  const d = document.createElement("details"); d.className = "branch"; d.open = open;
+  const s = document.createElement("summary");
+  const a = document.createElement("span"); a.textContent = title;
+  const c = document.createElement("span"); c.className = "count"; c.textContent = count === 1 ? t("rec1") : t("recs", { n: count });
+  s.append(a, c); d.appendChild(s);
+  const body = document.createElement("div"); body.className = "branch-body"; d.appendChild(body);
+  return { d, body };
+}
 function renderLibrary() {
-  const ul = $("recs"); ul.innerHTML = "";
+  const box = $("tree"); box.innerHTML = "";
   $("empty").hidden = state.recs.length > 0;
-  $("saveAllBtn").disabled = state.recs.length === 0;
-  for (const r of state.recs) {
-    if (!urls.has(r.id)) urls.set(r.id, URL.createObjectURL(r.blob));
-    const m = r.meta; const d = new Date(m.recordedAt);
-    const li = document.createElement("li"); li.className = "rec";
-    li.innerHTML = `
-      <div class="rec-top"><span class="rec-topic"></span><span>${d.toLocaleDateString("vi-VN")} ${d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })} · ${fmt(m.durationSec)}</span></div>
-      <p class="rec-q"><span class="vi"></span><span class="en"></span></p>
-      <audio controls preload="none"></audio>
-      <div class="rec-actions">
-        <button class="small-btn save">Lưu về máy · Save</button>
-        <button class="small-btn danger del">Xóa · Delete</button>
-      </div>`;
-    li.querySelector(".rec-topic").textContent = m.topic_vi;
-    li.querySelector(".vi").textContent = m.prompt_vi;
-    li.querySelector(".en").textContent = m.prompt_en;
-    li.querySelector("audio").src = urls.get(r.id);
-    li.querySelector(".save").onclick = () => saveOne(r);
-    li.querySelector(".del").onclick = e => askDelete(li, r, e.target.closest(".rec-actions"));
-    ul.appendChild(li);
+  $("saveAllBtn").hidden = state.recs.length === 0;
+  $("viewStory").setAttribute("aria-pressed", state.view === "story");
+  $("viewPerson").setAttribute("aria-pressed", state.view === "person");
+  if (!state.recs.length) return;
+  if (state.view === "story") {
+    const byTopic = new Map();
+    for (const r of state.recs) { const k = r.meta.topicId; if (!byTopic.has(k)) byTopic.set(k, []); byTopic.get(k).push(r); }
+    const order = TOPICS.map(tp => tp.id).concat([...byTopic.keys()].filter(k => !TOPICS.find(tp => tp.id === k)));
+    for (const tid of order) {
+      const list = byTopic.get(tid); if (!list) continue;
+      const tp = TOPICS.find(x => x.id === tid);
+      const { d, body } = branch(tp ? tp.name[L()] : (state.lang === "en" ? list[0].meta.topic_en : list[0].meta.topic_vi), list.length, tid === current().tp.id);
+      const byQ = new Map();
+      for (const r of list) { if (!byQ.has(r.meta.promptId)) byQ.set(r.meta.promptId, []); byQ.get(r.meta.promptId).push(r); }
+      const qOrder = (tp ? tp.qs.map(q => q.id) : []).concat([...byQ.keys()].filter(k => !PROMPTS.has(k)));
+      for (const qid of qOrder) {
+        const qs = byQ.get(qid); if (!qs) continue;
+        const blk = document.createElement("div"); blk.className = "q-block";
+        const h = document.createElement("p"); h.className = "q-title";
+        const pq = PROMPTS.get(qid);
+        h.textContent = pq ? (state.lang === "en" ? pq[1] : fill(pq[0], "Bạn")) : questionLabel(qs[0].meta);
+        blk.append(h, buildTree(qs, false));
+        body.appendChild(blk);
+      }
+      box.appendChild(d);
+    }
+  } else {
+    const ids = state.people.map(p => p.id);
+    const extra = [...new Set(state.recs.map(r => r.meta.speakerId))].filter(id => !ids.includes(id));
+    for (const pid of ids.concat(extra)) {
+      const list = state.recs.filter(r => r.meta.speakerId === pid); if (!list.length) continue;
+      const { d, body } = branch(person(pid) ? nameOf(pid) : (list[0].meta.speakerName || "?"), list.length, pid === state.speaker);
+      const ul = document.createElement("ul"); ul.className = "tree";
+      list.sort((a, b) => a.meta.recordedAt.localeCompare(b.meta.recordedAt)).forEach(r => ul.appendChild(recCard(r, true)));
+      body.appendChild(ul); box.appendChild(d);
+    }
   }
 }
-function askDelete(li, r, actions) {
+$("viewStory").onclick = () => { state.view = "story"; store.set("kc.view", "story"); renderLibrary(); };
+$("viewPerson").onclick = () => { state.view = "person"; store.set("kc.view", "person"); renderLibrary(); };
+function askDelete(card, r) {
+  const actions = card.querySelector(".rec-actions");
   const c = document.createElement("div"); c.className = "confirm";
-  c.innerHTML = `<span>Xóa chuyện này? · Delete this story?</span><button class="small-btn danger yes">Xóa · Delete</button><button class="small-btn no">Giữ lại · Keep</button>`;
-  actions.replaceWith(c);
-  c.querySelector(".no").onclick = () => c.replaceWith(actions);
-  c.querySelector(".yes").onclick = async () => {
+  const label = document.createElement("span"); label.textContent = t("deleteStory");
+  const yes = document.createElement("button"); yes.className = "small-btn danger"; yes.textContent = t("yesDelete");
+  const no = document.createElement("button"); no.className = "small-btn"; no.textContent = t("noKeep");
+  c.append(label, yes, no); actions.replaceWith(c);
+  no.onclick = () => c.replaceWith(actions);
+  yes.onclick = async () => {
+    // Replies to a deleted story move up to its parent so the tree stays connected.
+    const children = state.recs.filter(x => x.meta.parentId === r.id);
+    for (const ch of children) { ch.meta.parentId = r.meta.parentId || null; await tx("readwrite", s => s.put(ch)); }
     state.recs = state.recs.filter(x => x.id !== r.id);
+    if (state.replyTo === r.id) state.replyTo = null;
     if (urls.has(r.id)) { URL.revokeObjectURL(urls.get(r.id)); urls.delete(r.id); }
     await tx("readwrite", s => s.delete(r.id));
-    renderLibrary(); renderPrompt(); toast("Đã xóa · Deleted");
+    renderLibrary(); renderPrompt(); toast(t("deleted"));
   };
 }
 
@@ -499,21 +754,24 @@ async function getDownloads() {
 async function saveFile(filename, blob) {
   const dl = await getDownloads();
   if (dl) {
-    try { await dl.save({ filename, data: blob }); toast("Đã lưu về máy · Saved to device"); return true; }
-    catch (e) { if (e && e.code === "declined") return false; toast("Could not save here (" + (e && e.code || "error") + ")."); return false; }
+    try { await dl.save({ filename, data: blob }); toast(t("savedDevice")); return true; }
+    catch (e) { if (e && e.code === "declined") return false; toast(t("noSaveHere")); return false; }
   }
-  if (inArtifact()) { toast("Saving files is not available in this view."); return false; }
+  if (inArtifact()) { toast(t("noSaveHere")); return false; }
   const a = document.createElement("a"); const u = URL.createObjectURL(blob);
   a.href = u; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(u), 10000); return true;
 }
 function sidecar(m) {
+  const parent = m.parentId && state.recs.find(x => x.id === m.parentId);
   return [
+    `Người kể / Storyteller: ${m.speakerName}`,
     `Chủ đề / Topic: ${m.topic_vi} / ${m.topic_en}`,
     `Câu hỏi: ${m.prompt_vi}`, `Question: ${m.prompt_en}`,
+    parent ? `Trả lời / Responding to: ${parent.meta.speakerName}, ${parent.meta.filename}` : null,
     `Ngày ghi / Recorded: ${m.recordedAt}`, `Thời lượng / Duration: ${fmt(m.durationSec)}`,
     `Tệp / File: ${m.filename}`, ``, `Bản ghi lời (transcript):`, ``
-  ].join("\n");
+  ].filter(x => x !== null).join("\n");
 }
 async function saveOne(r) {
   const ext = r.meta.filename.split(".").pop();
@@ -521,39 +779,39 @@ async function saveOne(r) {
   return saveZip([r], r.meta.filename.replace(/\.[^.]+$/, "") + ".zip");
 }
 async function saveZip(list, name) {
-  if (!window.JSZip) { toast("Could not load the zip tool. Save stories one at a time."); return; }
+  if (!window.JSZip) { toast(t("noZip")); return; }
   const zip = new JSZip();
   const sorted = [...list].sort((a, b) => a.meta.recordedAt.localeCompare(b.meta.recordedAt));
   for (const r of sorted) {
     zip.file("audio/" + r.meta.filename, r.blob);
     zip.file("prompts/" + r.meta.filename.replace(/\.[^.]+$/, "") + ".txt", sidecar(r.meta));
   }
-  zip.file("stories.json", JSON.stringify({ app: "Kể Chuyện Ngày Xưa", exportedAt: new Date().toISOString(), spokenLanguageHint: "vi", recordings: sorted.map(r => r.meta) }, null, 2));
-  zip.file("README.txt", "audio/ holds one file per answer. prompts/ holds the question each file answers. stories.json lists every recording with its topic, question (Vietnamese and English), date and length.\n");
+  zip.file("stories.json", JSON.stringify({
+    app: "Kể Chuyện Ngày Xưa", version: 2, exportedAt: new Date().toISOString(), spokenLanguageHint: "vi",
+    storytellers: state.people, recordings: sorted.map(r => r.meta)
+  }, null, 2));
+  zip.file("README.txt", "audio/ holds one file per answer. prompts/ holds the question each file answers and who told it. stories.json lists the storytellers and every recording with its topic, question (Vietnamese and English), storyteller, date, length, and parentId when it responds to another recording, so the stories can be rebuilt as a tree.\n");
   const blob = await zip.generateAsync({ type: "blob", compression: "STORE" });
   return saveFile(name, blob);
 }
 $("saveAllBtn").onclick = () => saveZip(state.recs, `ke-chuyen-ngay-xua_${stamp(new Date())}.zip`);
 
-/* ---------- settings ---------- */
-$("settingsBtn").onclick = () => { const s = $("settings"); s.hidden = !s.hidden; $("settingsBtn").setAttribute("aria-expanded", !s.hidden); };
-$("addr").value = state.addr;
-$("addr").onchange = e => { state.addr = e.target.value; store.set("kc.addr", state.addr); renderPrompt(); };
-$("langSel").value = state.lang; $("app").dataset.lang = state.lang;
-$("langSel").onchange = e => { state.lang = e.target.value; store.set("kc.lang", state.lang); $("app").dataset.lang = state.lang; };
-
 let toastT;
-function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 3800); }
+function toast(msg) { const el = $("toast"); el.textContent = msg; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => el.hidden = true, 3800); }
 
 /* ---------- boot ---------- */
 (async () => {
   if (state.topic >= TOPICS.length) state.topic = 0;
-  render(); renderLibrary();
   // Inside a claude.ai artifact the browser microphone is not available, so record with the phone's own recorder instead.
-  if (inArtifact() || !navigator.mediaDevices || !window.MediaRecorder) useFallback();
+  if (inArtifact() || !navigator.mediaDevices || !window.MediaRecorder) state.fallback = true;
+  if (state.fallback) $("pickFile").hidden = false;
+  applyLang();
   idb = await openDB();
   const all = await tx("readonly", s => s.getAll());
-  if (all && all.length) { state.recs = all.sort((a, b) => b.meta.recordedAt.localeCompare(a.meta.recordedAt)); renderLibrary(); renderPrompt(); }
+  if (all && all.length) {
+    for (const r of all) if (!r.meta.speakerId) { r.meta.speakerId = state.people[0].id; r.meta.speakerName = state.people[0].name; r.meta.parentId = null; }
+    state.recs = all; renderLibrary(); renderPrompt();
+  }
 })();
 </script>
 </body></html>
