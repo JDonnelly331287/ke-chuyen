@@ -61,6 +61,8 @@ header h1 { margin: 0; font-family: var(--font-display); font-size: 34px; font-w
 .done-tag { color: var(--ok); text-transform: none; letter-spacing: 0; font-size: 15px; }
 .reply-banner { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .prompt-text { font-family: var(--font-display); font-size: clamp(30px, 7vw, 38px); font-weight: 500; line-height: 1.25; margin: 0; text-wrap: pretty; }
+.place-hint { margin: -4px 0 0; font-size: 16px; color: var(--accent); display: flex; gap: 8px; align-items: baseline; }
+.place-hint::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--gold); }
 .prompt-nav { display: flex; gap: 10px; margin-top: 8px; }
 .prompt-nav button { flex: 1; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 14px 10px; font-size: 17px; font-weight: 500; line-height: 1.2; }
 .prompt-nav button.primary { border-color: var(--ink); }
@@ -156,6 +158,7 @@ ul.tree ul.tree { margin-top: 10px; margin-left: 12px; padding-left: 14px; borde
     </div>
     <div class="prompt-meta"><span id="qCount"></span><span id="qDone" class="done-tag" hidden></span></div>
     <p class="prompt-text" id="qText"></p>
+    <p class="place-hint" id="qPlace" hidden></p>
     <div class="prompt-nav">
       <button id="prevBtn" data-t="prev"></button>
       <button id="nextBtn" class="primary" data-t="next"></button>
@@ -266,54 +269,84 @@ const T = {
   replyTo: ["trả lời {name}", "responding to {name}"],
   recs: ["{n} bản ghi", "{n} recordings"],
   rec1: ["1 bản ghi", "1 recording"],
+  placeHint: ["{X} nhớ nói rõ tên nơi chốn: làng, thành phố, tỉnh hoặc tiểu bang, quốc gia.", "Please name the places: village or city, province or state, and country."],
   nameRequired: ["Bạn hãy nhập tên.", "Please enter a name."]
 };
 const ADDR = ["Bạn", "Bà", "Ông", "Ngoại", "Nội", "Mẹ", "Má", "Ba", "Bố", "Cô", "Chú", "Dì", "Bác", "Anh", "Chị", "Em", "Con", "Cháu"];
 
+// Third item true = the question asks for a specific place, so the later map and timeline step can find it (meta.asksForPlace).
 const TOPICS = [
   { id: "child", name: ["Tuổi thơ ở Việt Nam", "Childhood in Vietnam"], qs: [
-    ["{X} sinh ra ở đâu? Làng quê hay thành phố nơi đó ra sao?", "Where were you born? What was that village or town like?"],
-    ["{X} hãy kể về ngôi nhà nơi {x} lớn lên. Nhà trông như thế nào, có những âm thanh và mùi hương gì?", "Tell us about the house you grew up in. What did it look, sound and smell like?"],
-    ["Cha mẹ của {x} là người như thế nào? Cha mẹ làm nghề gì?", "What were your parents like? What work did they do?"],
-    ["{X} có nhớ ông bà của {x} không? Hãy kể về ông bà.", "Do you remember your grandparents? Tell us about them."],
+    ["{X} sinh ra ở đâu? Hãy nói tên làng hoặc xã, huyện, và tỉnh. Nơi đó ra sao?", "Where exactly were you born? Name the village or town, the district and the province. What was it like?", true],
+    ["{X} hãy kể về ngôi nhà nơi {x} lớn lên. Nhà ở đường nào, khu nào? Nhà trông như thế nào, có những âm thanh và mùi hương gì?", "Tell us about the house you grew up in. What street or neighborhood was it on? What did it look, sound and smell like?", true],
+    ["Cha mẹ của {x} là người như thế nào? Cha mẹ làm nghề gì, ở đâu?", "What were your parents like? What work did they do, and where?", true],
+    ["{X} có nhớ ông bà của {x} không? Ông bà sống ở đâu? Hãy kể về ông bà.", "Do you remember your grandparents? Where did they live? Tell us about them.", true],
     ["Trong nhà {x} có mấy anh chị em? Ai thân với {x} nhất?", "How many brothers and sisters did you have? Who were you closest to?"],
-    ["Hồi nhỏ {x} hay chơi những trò gì, chơi với ai?", "What games did you play as a child, and with whom?"],
+    ["Hồi nhỏ {x} hay chơi những trò gì, chơi với ai, chơi ở đâu?", "What games did you play as a child, with whom, and where?"],
     ["Một ngày bình thường hồi nhỏ của {x} bắt đầu và kết thúc như thế nào?", "How did a typical day begin and end for you as a child?"],
-    ["Hồi đi học của {x} như thế nào? {X} còn nhớ thầy cô hay bạn bè nào không?", "What was school like for you? Do you remember a teacher or a friend?"],
-    ["{X} hãy kể về ngày Tết hồi {x} còn nhỏ. Cả nhà làm gì, ăn gì?", "Tell us about Tết when you were young. What did your family do and eat?"],
+    ["Hồi đi học của {x} như thế nào? Trường tên gì, ở đâu? {X} còn nhớ thầy cô hay bạn bè nào không?", "What was school like for you? What was the school called, and where was it? Do you remember a teacher or a friend?", true],
+    ["{X} hãy kể về ngày Tết hồi {x} còn nhỏ. Cả nhà làm gì, ăn gì, đi đâu?", "Tell us about Tết when you were young. What did your family do, eat, and where did you go?"],
     ["Món ăn nào làm {x} nhớ nhà nhất? Ai là người nấu món đó?", "Which food reminds you most of home? Who used to cook it?"],
-    ["{X} hãy kể về cái chợ gần nhà ngày xưa. Ở đó bán những gì?", "Tell us about the market near your home. What did they sell?"],
+    ["{X} hãy kể về cái chợ gần nhà ngày xưa. Chợ tên gì? Ở đó bán những gì?", "Tell us about the market near your home. What was it called? What did they sell?", true],
     ["Hồi nhỏ, kỷ niệm nào làm {x} vui nhất, hay sợ nhất?", "What was your happiest, or scariest, memory as a child?"]
   ]},
   { id: "young", name: ["Tuổi trẻ ở Việt Nam", "Growing up in Vietnam"], qs: [
     ["Lúc còn trẻ, {x} mơ ước sau này sẽ làm gì?", "When you were young, what did you dream of becoming?"],
-    ["Công việc đầu tiên của {x} là gì? {X} được trả lương bao nhiêu?", "What was your first job? How much were you paid?"],
-    ["{X} đã gặp người bạn đời như thế nào?", "How did you meet your husband, wife or partner?"],
-    ["{X} hãy kể về ngày cưới của mình.", "Tell us about your wedding day."],
-    ["{X} hãy kể về lúc đứa con đầu lòng chào đời.", "Tell us about the day your first child was born."],
-    ["Ngày xưa {x} thích nghe bài hát nào, ca sĩ nào? {X} hát thử một câu được không?", "Which songs and singers did you love back then? Can you sing a line?"],
-    ["{X} còn nhớ gì về những năm chiến tranh? Gia đình {x} đã trải qua những gì?", "What do you remember about the war years? What did your family go through?"],
-    ["Tháng Tư năm 1975, {x} đang ở đâu và đã thấy những gì?", "Where were you in April 1975, and what did you see?"],
-    ["Sau năm 1975, cuộc sống của gia đình {x} thay đổi như thế nào?", "How did life change for your family after 1975?"]
+    ["Công việc đầu tiên của {x} là gì, ở đâu? {X} được trả lương bao nhiêu?", "What was your first job, and where? How much were you paid?", true],
+    ["{X} đã gặp người bạn đời như thế nào, ở đâu?", "How and where did you meet your husband, wife or partner?", true],
+    ["{X} hãy kể về ngày cưới của mình. Đám cưới tổ chức ở đâu?", "Tell us about your wedding day. Where was it held?", true],
+    ["{X} hãy kể về lúc đứa con đầu lòng chào đời. Con sinh ra ở đâu?", "Tell us about the day your first child was born. Where were they born?", true],
+    ["Ngày xưa {x} thích nghe bài hát nào, ca sĩ nào? {X} hát thử một câu được không?", "Which songs and singers did you love back then? Can you sing a line?"]
   ]},
-  { id: "leave", name: ["Rời Việt Nam", "Leaving Vietnam"], qs: [
+  { id: "war", name: ["Những năm chiến tranh", "The war years"], qs: [
+    ["Khi chiến tranh bắt đầu ảnh hưởng đến cuộc sống, {x} đang sống ở đâu? Hãy nói tên thành phố hoặc làng, và tỉnh.", "Where were you living when the war began to affect your life? Name the city or village and the province.", true],
+    ["{X} còn nhớ lần đầu tiên chiến tranh đến gần mình không? Chuyện xảy ra ở đâu, năm nào?", "Do you remember the first time the war came close to you? Where and in what year did it happen?", true],
+    ["Trong gia đình {x}, có ai đi lính, làm cho chính phủ hay làm việc với người Mỹ không? Họ làm gì, đóng quân hay làm việc ở đâu?", "Did anyone in your family serve in the military, work for the government, or work with the Americans? What did they do, and where were they stationed or working?", true],
+    ["Trong chiến tranh, cuộc sống hằng ngày thay đổi ra sao? Đi chợ, đi học, đi làm có khác không?", "How did daily life change during the war? Was going to market, school or work different?"],
+    ["Gia đình {x} có phải chạy loạn hay dời nhà không? Đi từ đâu đến đâu?", "Did your family ever have to flee or move because of the fighting? From where to where?", true],
+    ["{X} còn nhớ Tết Mậu Thân năm 1968 không? Lúc đó {x} ở đâu, và đã thấy gì?", "Do you remember the Tết Offensive in 1968? Where were you, and what did you see?", true],
+    ["Tháng Tư năm 1975, {x} đang ở đâu? {X} đã thấy và nghe những gì?", "Where were you in April 1975? What did you see and hear?", true],
+    ["Sau năm 1975, cuộc sống của gia đình {x} thay đổi như thế nào? Có ai phải đi học tập cải tạo hay đi kinh tế mới không? Ở đâu?", "How did life change for your family after 1975? Was anyone sent to a re-education camp or a new economic zone? Where?", true]
+  ]},
+  { id: "boat", name: ["Vượt biên bằng thuyền", "Leaving by boat"], qs: [
     ["Lần đầu tiên {x} nghĩ đến chuyện rời Việt Nam là khi nào? Vì sao?", "When did you first think about leaving Vietnam, and why?"],
-    ["Ai đi cùng {x}, và ai phải ở lại?", "Who left with you, and who stayed behind?"],
-    ["{X} mang theo những gì? Phải bỏ lại những gì?", "What did you take with you? What did you have to leave behind?"],
-    ["{X} hãy kể về chuyến đi. {X} đi bằng cách nào, mất bao lâu?", "Tell us about the journey. How did you travel, and how long did it take?"],
-    ["{X} có ở trại tị nạn hay nơi nào để chờ đợi không? Cuộc sống ở đó ra sao?", "Did you stay in a refugee camp or somewhere else while you waited? What was life like there?"],
+    ["Gia đình {x} chuẩn bị chuyến đi như thế nào? Có phải giữ bí mật không? Có phải trả vàng không?", "How did your family prepare for the escape? Did it have to be kept secret? Did you have to pay in gold?"],
+    ["Ai đi cùng {x}, và ai phải ở lại?", "Who left with you, and who had to stay behind?"],
+    ["{X} mang theo những gì? Phải bỏ lại những gì?", "What did you bring with you, and what did you have to leave behind?"],
+    ["{X} lên thuyền ở đâu, vào ngày tháng năm nào? Hãy nói tên bến, sông hoặc bãi biển, và tỉnh.", "Where and when did you board the boat? Name the dock, river or beach, the province, and the date if you remember.", true],
+    ["Con thuyền trông như thế nào? Thuyền lớn cỡ nào, có bao nhiêu người trên thuyền?", "What was the boat like? How big was it, and how many people were on board?"],
+    ["Chuyến đi trên biển kéo dài bao lâu? Mỗi ngày trên thuyền ra sao: ăn uống, ngủ nghỉ, thời tiết?", "How long were you at sea? What was each day on the boat like: food, water, sleep, weather?"],
+    ["Trên biển {x} có gặp bão, hải tặc, hay tàu nào đi ngang không? Chuyện gì đã xảy ra?", "At sea, did you face storms, pirates, or ships that passed by? What happened?"],
+    ["Thuyền cập bờ hoặc được cứu ở đâu? Hãy nói tên nơi đó và quốc gia.", "Where did the boat reach land or get rescued? Name the place and the country.", true],
     ["Lúc rời đi, hình ảnh cuối cùng về quê hương mà {x} còn nhớ là gì?", "As you left, what is the last picture of home you remember?"]
   ]},
-  { id: "usa", name: ["Đến Mỹ", "Arriving in America"], qs: [
-    ["{X} hãy kể về ngày đầu tiên đến Mỹ. Điều gì làm {x} ngạc nhiên nhất?", "Tell us about your first day in America. What surprised you most?"],
-    ["{X} đến thành phố nào đầu tiên? Ai đã giúp đỡ gia đình {x}?", "Which city did you arrive in first? Who helped your family?"],
-    ["Căn nhà đầu tiên của {x} ở Mỹ trông như thế nào?", "What was your first home in America like?"],
-    ["Công việc đầu tiên ở Mỹ của {x} là gì?", "What was your first job in America?"],
+  { id: "camp", name: ["Trại tị nạn", "The refugee camp"], qs: [
+    ["{X} ở trại tị nạn nào? Trại ở đâu, thuộc nước nào? Ví dụ: Pulau Bidong, Galang, Palawan, Songkhla, Hồng Kông.", "Which refugee camp were you in? Where was it, and in what country? For example Pulau Bidong, Galang, Palawan, Songkhla or Hong Kong.", true],
+    ["{X} ở trại bao lâu? Đến trại khi nào và rời trại khi nào?", "How long were you in the camp? When did you arrive, and when did you leave?"],
+    ["Chỗ ở của {x} trong trại trông như thế nào? Mỗi ngày {x} làm gì?", "What was your living space in the camp like? What did you do each day?"],
+    ["Thức ăn, nước uống, và việc chữa bệnh trong trại ra sao?", "What were food, water and medical care like in the camp?"],
+    ["Trong trại {x} đã quen những ai? Có kỷ niệm nào {x} không bao giờ quên?", "Who did you meet in the camp? Is there a memory you will never forget?"],
+    ["{X} có học tiếng Anh hay học nghề trong trại không? Ai dạy?", "Did you study English or learn a skill in the camp? Who taught you?"],
+    ["Buổi phỏng vấn để đi định cư diễn ra như thế nào? Ai bảo lãnh gia đình {x}?", "What was your resettlement interview like? Who sponsored your family?"],
+    ["Lúc biết tin được đi Mỹ, {x} cảm thấy thế nào?", "How did you feel when you learned you would go to America?"]
+  ]},
+  { id: "arrive", name: ["Đến Mỹ", "Coming to America"], qs: [
+    ["{X} đến Mỹ khi nào? Chuyến bay đi từ đâu, và hạ cánh ở thành phố nào?", "When did you arrive in America? Where did your flight leave from, and what city did you land in?", true],
+    ["Trước khi có nhà, {x} có ở trại hay nơi tạm trú nào không, như Camp Pendleton hay Fort Chaffee? Ở đâu?", "Before you had a home, did you stay at a camp or temporary shelter, such as Camp Pendleton or Fort Chaffee? Where?", true],
+    ["Ngày đầu tiên ở Mỹ ra sao? Điều gì làm {x} ngạc nhiên nhất?", "What was your first day in America like? What surprised you most?"],
+    ["Ai đã đón và giúp đỡ gia đình {x}: nhà thờ, hội từ thiện, hay người thân? Họ tên gì, ở đâu?", "Who met and helped your family: a church, a charity, or relatives? What were their names, and where were they?", true],
     ["Học tiếng Anh có khó với {x} không? Có chuyện vui nào về tiếng Anh không?", "Was learning English hard for you? Do you have a funny story about it?"],
-    ["{X} đã tìm được chợ Việt, nhà thờ, chùa hay người Việt ở gần như thế nào?", "How did you find Vietnamese markets, a church or temple, or other Vietnamese families nearby?"],
-    ["Mùa đông đầu tiên, hay lần đầu {x} thấy tuyết, ra sao?", "What was your first winter, or your first snow, like?"],
-    ["{X} hãy kể về ngày {x} trở thành công dân Mỹ.", "Tell us about the day you became a U.S. citizen."],
-    ["{X} có về thăm Việt Nam không? Quê hương đã thay đổi như thế nào?", "Have you gone back to visit Vietnam? How had it changed?"]
+    ["Mùa đông đầu tiên, hay lần đầu {x} thấy tuyết, ra sao? Lúc đó {x} ở đâu?", "What was your first winter, or your first snow, like? Where were you living?", true]
+  ]},
+  { id: "settle", name: ["Định cư ở Mỹ", "Settling in America"], qs: [
+    ["Căn nhà đầu tiên của {x} ở Mỹ ở đâu? Hãy nói tên đường, thành phố, và tiểu bang nếu {x} còn nhớ.", "Where was your first home in America? Name the street, city and state if you remember.", true],
+    ["Công việc đầu tiên ở Mỹ của {x} là gì? Chỗ làm tên gì, ở đâu?", "What was your first job in America? What was the workplace called, and where was it?", true],
+    ["{X} tìm được chợ Việt, nhà thờ, chùa hay cộng đồng người Việt ở đâu? Những nơi đó tên gì?", "Where did you find Vietnamese markets, a church or temple, or a Vietnamese community? What were those places called?", true],
+    ["Gia đình {x} đã sống ở những nơi nào ở Mỹ? Vì sao dọn nhà?", "Where else have you and your family lived in America, and why did you move?", true],
+    ["Các con của {x} lớn lên ở đâu, đi học trường nào?", "Where did your children grow up, and which schools did they attend?", true],
+    ["{X} hãy kể về ngày {x} trở thành công dân Mỹ. Lễ tuyên thệ ở đâu?", "Tell us about the day you became a U.S. citizen. Where was the ceremony?", true],
+    ["{X} có về thăm Việt Nam không? {X} đã về những nơi nào, và quê hương đã thay đổi ra sao?", "Have you gone back to visit Vietnam? Which places did you visit, and how had they changed?", true],
+    ["Điều gì đã giúp {x} cảm thấy nước Mỹ là nhà?", "What helped America start to feel like home to you?"]
   ]},
   { id: "wisdom", name: ["Cuộc đời và lời dặn", "Life and wisdom"], qs: [
     ["Điều gì làm {x} tự hào nhất trong cuộc đời?", "What are you proudest of in your life?"],
@@ -325,7 +358,7 @@ const TOPICS = [
     ["{X} muốn nhắn nhủ gì với con cháu sau này?", "What would you like to tell the generations after you?"]
   ]},
   { id: "free", name: ["Chuyện khác", "Any story"], qs: [
-    ["{X} muốn kể chuyện gì cũng được.", "Tell us any story you would like to share."]
+    ["{X} muốn kể chuyện gì cũng được. Nếu có nơi chốn, hãy nói rõ tên.", "Tell us any story you would like to share. If it happened somewhere, name the place.", true]
   ]}
 ];
 const PROMPTS = new Map();
@@ -446,6 +479,7 @@ function renderPrompt() {
   const { tp, q } = current();
   $("qText").textContent = promptText(q, speaker().addr);
   $("qCount").textContent = `${tp.name[L()]} · ${(state.q % tp.qs.length) + 1}/${tp.qs.length}`;
+  $("qPlace").hidden = !q[2]; $("qPlace").textContent = t("placeHint", { X: speaker().addr });
   $("qDone").hidden = !toldSet().has(q.id); $("qDone").textContent = t("told");
   const single = tp.qs.length < 2 || !!state.replyTo;
   $("prevBtn").disabled = single; $("nextBtn").disabled = single;
@@ -604,7 +638,7 @@ async function addRecording(blob, dur, source, origName) {
     id: base, recordedAt: now.toISOString(), durationSec: Math.round(dur),
     speakerId: sp.id, speakerName: sp.name, parentId: state.replyTo || null,
     topicId: tp.id, topic_vi: tp.name[0], topic_en: tp.name[1], promptId: q.id,
-    prompt_vi: fill(q[0], sp.addr), prompt_en: q[1], addressTerm: sp.addr,
+    prompt_vi: fill(q[0], sp.addr), prompt_en: q[1], asksForPlace: !!q[2], addressTerm: sp.addr,
     mimeType: blob.type || "", source, originalName: origName || null,
     filename: `${base}.${ext}`
   };
@@ -789,7 +823,7 @@ async function saveZip(list, name) {
     app: "Kể Chuyện Ngày Xưa", version: 2, exportedAt: new Date().toISOString(), spokenLanguageHint: "vi",
     storytellers: state.people, recordings: sorted.map(r => r.meta)
   }, null, 2));
-  zip.file("README.txt", "audio/ holds one file per answer. prompts/ holds the question each file answers and who told it. stories.json lists the storytellers and every recording with its topic, question (Vietnamese and English), storyteller, date, length, and parentId when it responds to another recording, so the stories can be rebuilt as a tree.\n");
+  zip.file("README.txt", "audio/ holds one file per answer. prompts/ holds the question each file answers and who told it. stories.json lists the storytellers and every recording with its topic, asksForPlace (true when the question asked for specific places, for map links later), question (Vietnamese and English), storyteller, date, length, and parentId when it responds to another recording, so the stories can be rebuilt as a tree.\n");
   const blob = await zip.generateAsync({ type: "blob", compression: "STORE" });
   return saveFile(name, blob);
 }
