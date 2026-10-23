@@ -14,14 +14,43 @@
         "year_start": 1948,
         "year_end": 1960,
         "paragraphs": [
-          {"text": "She was born in a wooden house on stilts outside Mỹ Tho, where the Tiền River runs wide and brown toward the sea. Her mother sold fish sauce from clay jars at the morning market, and the house smelled of it always, salt and sun and smoke from the cooking fire.", "sources": ["sample-child-01"]},
-          {"text": "There were seven children. She was the fourth, and the one who followed her grandfather everywhere: to the orchard behind the house, to the temple on the first and fifteenth of every lunar month, to the dock to watch the sampans come in loaded with coconuts.", "sources": ["sample-child-01"]},
-          {"text": "\"We had nothing,\" she says, and then laughs, \"but we did not know we had nothing.\" Rice was cooked once a day in a big pot, and whatever was left became cơm cháy, the crisp crust at the bottom that the children fought over.", "sources": ["sample-child-01"]}
+          {
+            "text": "She was born in a wooden house on stilts outside Mỹ Tho, where the [Tiền River](https://en.wikipedia.org/wiki/Tiền_River) runs wide and brown toward the sea. Her mother sold fish sauce from clay jars at the morning market, and the house smelled of it always, salt and sun and smoke from the cooking fire.",
+            "sources": [
+              "sample-child-01"
+            ]
+          },
+          {
+            "text": "There were seven children. She was the fourth, and the one who followed her grandfather everywhere: to the orchard behind the house, to the temple on the first and fifteenth of every lunar month, to the dock to watch the sampans come in loaded with coconuts.",
+            "sources": [
+              "sample-child-01"
+            ]
+          },
+          {
+            "text": "\"We had nothing,\" she says, and then laughs, \"but we did not know we had nothing.\" Rice was cooked once a day in a big pot, and whatever was left became cơm cháy, the crisp crust at the bottom that the children fought over.",
+            "sources": [
+              "sample-child-01"
+            ]
+          }
         ],
         "quotes": [
-          {"spoken": "Hồi đó nghèo lắm, mà đâu có biết mình nghèo.", "english": "We were so poor back then, but we didn't know we were poor.", "source": "sample-child-01"}
+          {
+            "spoken": "Hồi đó nghèo lắm, mà đâu có biết mình nghèo.",
+            "english": "We were so poor back then, but we didn't know we were poor.",
+            "source": "sample-child-01"
+          }
         ],
-        "places": ["my-tho", "tien-river"]
+        "places": [
+          "my-tho",
+          "tien-river"
+        ],
+        "figures": [
+          {
+            "photo": "sample-river",
+            "after_paragraph": 0,
+            "caption": "The river behind the house, as the family album remembers it. (Sample picture.)"
+          }
+        ]
       },
       {
         "id": "saigon",
@@ -30,11 +59,30 @@
         "year_start": 1961,
         "year_end": 1975,
         "paragraphs": [
-          {"text": "At sixteen she went to Saigon to live with an aunt on Trần Hưng Đạo street and learned to sew. By twenty she had her own machine, and by twenty-five a small shop of her own, with a sign her husband painted himself.", "sources": ["sample-young-01"]},
-          {"text": "She remembers the noise of the city most of all: bicycle bells, the cyclo drivers calling out, radios in every doorway. In the evenings the family walked along the river at Bạch Đằng wharf to catch the breeze.", "sources": ["sample-young-01"]}
+          {
+            "text": "At sixteen she went to Saigon to live with an aunt on Trần Hưng Đạo street and learned to sew. By twenty she had her own machine, and by twenty-five a small shop of her own, with a sign her husband painted himself.",
+            "sources": [
+              "sample-young-01"
+            ]
+          },
+          {
+            "text": "She remembers the noise of the city most of all: bicycle bells, the cyclo drivers calling out, radios in every doorway. In the evenings the family walked along the river at Bạch Đằng wharf to catch the breeze.",
+            "sources": [
+              "sample-young-01"
+            ]
+          }
         ],
         "quotes": [],
-        "places": ["saigon"]
+        "places": [
+          "saigon"
+        ],
+        "figures": [
+          {
+            "photo": "sample-shop",
+            "after_paragraph": 0,
+            "caption": "The sewing shop, around 1972. (Sample picture.)"
+          }
+        ]
       },
       {
         "id": "sea",
@@ -43,66 +91,312 @@
         "year_start": 1979,
         "year_end": 1980,
         "paragraphs": [
-          {"text": "They left from a canal near Rạch Giá in the dark, forty-two people on a boat built to carry fish. For four days they saw nothing but water. On the fifth morning a fishing boat from Malaysia pointed them toward Pulau Bidong.", "sources": ["sample-boat-01"]},
-          {"text": "Her son, who was nine, remembers it differently: as an adventure, until the water ran out. \"Mẹ gave me her share,\" he adds in his own recording. \"I did not know until much later.\"", "sources": ["sample-boat-01-reply"]}
+          {
+            "text": "They left from a canal near Rạch Giá in the dark, forty-two people on a boat built to carry fish. For four days they saw nothing but water. On the fifth morning a fishing boat from Malaysia pointed them toward Pulau Bidong.",
+            "sources": [
+              "sample-boat-01"
+            ]
+          },
+          {
+            "text": "Her son, who was nine, remembers it differently: as an adventure, until the water ran out. \"Mẹ gave me her share,\" he adds in his own recording. \"I did not know until much later.\"",
+            "sources": [
+              "sample-boat-01-reply"
+            ]
+          }
         ],
         "quotes": [
-          {"spoken": "Má nhường phần nước cho con, mà con đâu có hay.", "english": "Mom gave me her share of the water, and I never knew.", "source": "sample-boat-01-reply"}
+          {
+            "spoken": "Má nhường phần nước cho con, mà con đâu có hay.",
+            "english": "Mom gave me her share of the water, and I never knew.",
+            "source": "sample-boat-01-reply"
+          }
         ],
-        "places": ["rach-gia", "pulau-bidong"]
+        "places": [
+          "rach-gia",
+          "pulau-bidong"
+        ],
+        "figures": []
       }
     ],
     "epilogue": [
       "The real epilogue will be written from the last questions in the recorder: what she wants her grandchildren to know."
     ],
     "timeline": [
-      {"year": 1948, "year_end": null, "approximate": true, "when": "khoảng năm 1948", "label": "Born outside Mỹ Tho, the fourth of seven children", "chapter": "river", "place": "Mỹ Tho", "sources": ["sample-child-01"]},
-      {"year": 1964, "year_end": null, "approximate": false, "when": "at sixteen", "label": "Moves to Saigon to learn sewing", "chapter": "saigon", "place": "Saigon", "sources": ["sample-young-01"]},
-      {"year": 1979, "year_end": null, "approximate": false, "when": "1979", "label": "Leaves by boat from Rạch Giá with 42 people", "chapter": "sea", "place": "Rạch Giá", "sources": ["sample-boat-01"]},
-      {"year": 1979, "year_end": 1980, "approximate": false, "when": "1979 to 1980", "label": "Lives in the refugee camp on Pulau Bidong", "chapter": "sea", "place": "Pulau Bidong", "sources": ["sample-boat-01"]}
+      {
+        "year": 1948,
+        "year_end": null,
+        "approximate": true,
+        "when": "khoảng năm 1948",
+        "label": "Born outside Mỹ Tho, the fourth of seven children",
+        "chapter": "river",
+        "place": "Mỹ Tho",
+        "sources": [
+          "sample-child-01"
+        ]
+      },
+      {
+        "year": 1964,
+        "year_end": null,
+        "approximate": false,
+        "when": "at sixteen",
+        "label": "Moves to Saigon to learn sewing",
+        "chapter": "saigon",
+        "place": "Saigon",
+        "sources": [
+          "sample-young-01"
+        ]
+      },
+      {
+        "year": 1979,
+        "year_end": null,
+        "approximate": false,
+        "when": "1979",
+        "label": "Leaves by boat from Rạch Giá with 42 people",
+        "chapter": "sea",
+        "place": "Rạch Giá",
+        "sources": [
+          "sample-boat-01"
+        ]
+      },
+      {
+        "year": 1979,
+        "year_end": 1980,
+        "approximate": false,
+        "when": "1979 to 1980",
+        "label": "Lives in the refugee camp on Pulau Bidong",
+        "chapter": "sea",
+        "place": "Pulau Bidong",
+        "sources": [
+          "sample-boat-01"
+        ]
+      }
     ],
     "places": [
-      {"id": "my-tho", "name": "Mỹ Tho", "name_en": "My Tho", "kind": "city", "admin_area": "Tiền Giang", "country": "Vietnam", "period": "Childhood, 1948 to 1960", "note": "The river town where she was born and grew up.", "chapters": ["river"], "sources": ["sample-child-01"]},
-      {"id": "tien-river", "name": "Sông Tiền", "name_en": "Tiền River", "kind": "landmark", "admin_area": "Tiền Giang", "country": "Vietnam", "period": "Childhood", "note": "The branch of the Mekong her family's house stood beside.", "chapters": ["river"], "sources": ["sample-child-01"]},
-      {"id": "saigon", "name": "Sài Gòn", "name_en": "Saigon", "kind": "city", "admin_area": null, "country": "Vietnam", "period": "Youth, 1964 to 1979", "note": "Where she learned to sew and opened her shop.", "chapters": ["saigon"], "sources": ["sample-young-01"]},
-      {"id": "rach-gia", "name": "Rạch Giá", "name_en": "Rach Gia", "kind": "town", "admin_area": "Kiên Giang", "country": "Vietnam", "period": "1979", "note": "The coast they left from at night.", "chapters": ["sea"], "sources": ["sample-boat-01"]},
-      {"id": "pulau-bidong", "name": "Pulau Bidong", "name_en": "Bidong Island", "kind": "camp", "admin_area": "Terengganu", "country": "Malaysia", "period": "1979 to 1980", "note": "The island refugee camp where they waited for a country to take them.", "chapters": ["sea"], "sources": ["sample-boat-01"]}
+      {
+        "id": "my-tho",
+        "name": "Mỹ Tho",
+        "name_en": "My Tho",
+        "kind": "city",
+        "admin_area": "Tiền Giang",
+        "country": "Vietnam",
+        "period": "Childhood, 1948 to 1960",
+        "note": "The river town where she was born and grew up.",
+        "chapters": [
+          "river"
+        ],
+        "sources": [
+          "sample-child-01"
+        ],
+        "link": "https://en.wikipedia.org/wiki/Mỹ_Tho"
+      },
+      {
+        "id": "tien-river",
+        "name": "Sông Tiền",
+        "name_en": "Tiền River",
+        "kind": "landmark",
+        "admin_area": "Tiền Giang",
+        "country": "Vietnam",
+        "period": "Childhood",
+        "note": "The branch of the Mekong her family's house stood beside.",
+        "chapters": [
+          "river"
+        ],
+        "sources": [
+          "sample-child-01"
+        ],
+        "link": "https://en.wikipedia.org/wiki/Tiền_River"
+      },
+      {
+        "id": "saigon",
+        "name": "Sài Gòn",
+        "name_en": "Saigon",
+        "kind": "city",
+        "admin_area": null,
+        "country": "Vietnam",
+        "period": "Youth, 1964 to 1979",
+        "note": "Where she learned to sew and opened her shop.",
+        "chapters": [
+          "saigon"
+        ],
+        "sources": [
+          "sample-young-01"
+        ],
+        "link": "https://en.wikipedia.org/wiki/Ho_Chi_Minh_City"
+      },
+      {
+        "id": "rach-gia",
+        "name": "Rạch Giá",
+        "name_en": "Rach Gia",
+        "kind": "town",
+        "admin_area": "Kiên Giang",
+        "country": "Vietnam",
+        "period": "1979",
+        "note": "The coast they left from at night.",
+        "chapters": [
+          "sea"
+        ],
+        "sources": [
+          "sample-boat-01"
+        ],
+        "link": "https://en.wikipedia.org/wiki/Rạch_Giá"
+      },
+      {
+        "id": "pulau-bidong",
+        "name": "Pulau Bidong",
+        "name_en": "Bidong Island",
+        "kind": "camp",
+        "admin_area": "Terengganu",
+        "country": "Malaysia",
+        "period": "1979 to 1980",
+        "note": "The island refugee camp where they waited for a country to take them.",
+        "chapters": [
+          "sea"
+        ],
+        "sources": [
+          "sample-boat-01"
+        ],
+        "link": "https://en.wikipedia.org/wiki/Bidong_Island"
+      }
     ],
     "people": [
-      {"name": "Ông Ngoại", "relation": "grandfather", "note": "Took her to the orchard and the temple; the person she followed everywhere."},
-      {"name": "Dì Tư", "relation": "aunt", "note": "Gave her a home in Saigon and taught her to sew."}
+      {
+        "name": "Ông Ngoại",
+        "relation": "grandfather",
+        "note": "Took her to the orchard and the temple; the person she followed everywhere."
+      },
+      {
+        "name": "Dì Tư",
+        "relation": "aunt",
+        "note": "Gave her a home in Saigon and taught her to sew."
+      }
     ],
     "open_questions": [
-      {"question_en": "What was your grandfather's name, and what did he grow in the orchard?", "question_vi": "Bà ơi, ông ngoại của Bà tên gì, và ông trồng gì trong vườn?", "why": "He appears in several stories but is never named."},
-      {"question_en": "How did you decide to leave in 1979, and who decided?", "question_vi": "Bà ơi, năm 1979 sao gia đình quyết định ra đi, và ai là người quyết định?", "why": "The boat story starts at the canal; the decision is missing."}
+      {
+        "question_en": "What was your grandfather's name, and what did he grow in the orchard?",
+        "question_vi": "Bà ơi, ông ngoại của Bà tên gì, và ông trồng gì trong vườn?",
+        "why": "He appears in several stories but is never named."
+      },
+      {
+        "question_en": "How did you decide to leave in 1979, and who decided?",
+        "question_vi": "Bà ơi, năm 1979 sao gia đình quyết định ra đi, và ai là người quyết định?",
+        "why": "The boat story starts at the canal; the decision is missing."
+      }
+    ],
+    "pictures_to_find": [
+      {
+        "chapter": "Leaving by Night",
+        "picture": "A photo of the Pulau Bidong camp around 1979",
+        "where_to_look": "Wikimedia Commons, UNHCR archives"
+      }
     ]
   },
   "vi": {
     "title": "Dòng Sông và Biển Cả",
     "subtitle": "Một câu chuyện mẫu, để xem trang hoàn chỉnh sẽ trông như thế nào",
     "dedication": "Tặng các cháu, những người đã hỏi.",
-    "prologue": ["Đây là trang mẫu. Mọi tên người và sự việc ở đây đều là hư cấu để bạn xem bố cục trước khi các đoạn ghi âm thật được chép lại. Khi bạn chạy bước viết, trang này sẽ được viết lại từ chính lời kể của gia đình bạn."],
-    "chapters": [
-      {"title": "Ngôi nhà bên sông Tiền", "era": "Tuổi thơ", "paragraphs": [
-        "Bà sinh ra trong một ngôi nhà sàn bằng gỗ ở ngoại ô Mỹ Tho, nơi sông Tiền chảy rộng và đục ngầu ra biển. Má của bà bán nước mắm trong những chiếc lu sành ở chợ sáng, và ngôi nhà lúc nào cũng thơm mùi ấy, mùi muối, mùi nắng và mùi khói bếp.",
-        "Nhà có bảy anh chị em. Bà là con thứ tư, và là đứa cứ lẽo đẽo theo ông ngoại khắp nơi: ra vườn sau nhà, lên chùa vào mùng một và rằm mỗi tháng, ra bến xem ghe xuồng chở dừa về.",
-        "\"Hồi đó nghèo lắm,\" bà kể, rồi cười, \"mà đâu có biết mình nghèo.\" Cơm nấu mỗi ngày một nồi lớn, và phần còn lại thành cơm cháy giòn dưới đáy nồi mà lũ trẻ tranh nhau."
-      ]},
-      {"title": "Thành phố của những chiếc xe đạp", "era": "Tuổi trẻ", "paragraphs": [
-        "Năm mười sáu tuổi, bà lên Sài Gòn ở với dì trên đường Trần Hưng Đạo và học may. Đến hai mươi tuổi bà đã có máy may riêng, và đến hai mươi lăm tuổi thì có một tiệm nhỏ, với tấm bảng do chính tay chồng bà vẽ.",
-        "Điều bà nhớ nhất về thành phố là tiếng ồn: tiếng chuông xe đạp, tiếng mấy ông xích lô gọi khách, tiếng radio ở mọi cửa nhà. Chiều chiều cả nhà đi dạo bến Bạch Đằng hóng gió."
-      ]},
-      {"title": "Ra đi trong đêm", "era": "Vượt biên", "paragraphs": [
-        "Họ ra đi trong đêm tối từ một con kênh gần Rạch Giá, bốn mươi hai người trên một chiếc ghe đánh cá. Bốn ngày liền chỉ thấy nước. Sáng ngày thứ năm, một chiếc tàu đánh cá Mã Lai chỉ đường cho họ đến Pulau Bidong.",
-        "Con trai bà, lúc đó chín tuổi, lại nhớ khác: như một chuyến phiêu lưu, cho đến khi hết nước. \"Má nhường phần nước cho con,\" anh kể trong đoạn ghi âm của mình, \"mà mãi sau này con mới biết.\""
-      ]}
+    "prologue": [
+      "Đây là trang mẫu. Mọi tên người và sự việc ở đây đều là hư cấu để bạn xem bố cục trước khi các đoạn ghi âm thật được chép lại. Khi bạn chạy bước viết, trang này sẽ được viết lại từ chính lời kể của gia đình bạn."
     ],
-    "epilogue": ["Lời kết thật sẽ được viết từ những câu hỏi cuối trong máy ghi âm: những điều bà muốn các cháu biết."],
-    "timeline": ["Sinh ra ở ngoại ô Mỹ Tho, con thứ tư trong bảy anh chị em", "Lên Sài Gòn học may", "Vượt biên từ Rạch Giá cùng 42 người", "Sống ở trại tị nạn Pulau Bidong"],
-    "places": ["Thị xã ven sông nơi bà sinh ra và lớn lên.", "Nhánh sông Cửu Long chảy ngang nhà bà.", "Nơi bà học may và mở tiệm.", "Bờ biển nơi họ ra đi trong đêm.", "Trại tị nạn trên đảo, nơi họ chờ một nước nhận cho định cư."],
-    "people": [{"relation": "ông ngoại", "note": "Dẫn bà ra vườn và lên chùa; người bà theo khắp nơi."}, {"relation": "dì", "note": "Cho bà ở nhờ ở Sài Gòn và dạy bà may."}]
+    "chapters": [
+      {
+        "title": "Ngôi nhà bên sông Tiền",
+        "era": "Tuổi thơ",
+        "paragraphs": [
+          "Bà sinh ra trong một ngôi nhà sàn bằng gỗ ở ngoại ô Mỹ Tho, nơi [sông Tiền](https://vi.wikipedia.org/wiki/Sông_Tiền) chảy rộng và đục ngầu ra biển. Má của bà bán nước mắm trong những chiếc lu sành ở chợ sáng, và ngôi nhà lúc nào cũng thơm mùi ấy, mùi muối, mùi nắng và mùi khói bếp.",
+          "Nhà có bảy anh chị em. Bà là con thứ tư, và là đứa cứ lẽo đẽo theo ông ngoại khắp nơi: ra vườn sau nhà, lên chùa vào mùng một và rằm mỗi tháng, ra bến xem ghe xuồng chở dừa về.",
+          "\"Hồi đó nghèo lắm,\" bà kể, rồi cười, \"mà đâu có biết mình nghèo.\" Cơm nấu mỗi ngày một nồi lớn, và phần còn lại thành cơm cháy giòn dưới đáy nồi mà lũ trẻ tranh nhau."
+        ],
+        "figures": [
+          "Dòng sông sau nhà, như trong album gia đình. (Hình mẫu.)"
+        ]
+      },
+      {
+        "title": "Thành phố của những chiếc xe đạp",
+        "era": "Tuổi trẻ",
+        "paragraphs": [
+          "Năm mười sáu tuổi, bà lên Sài Gòn ở với dì trên đường Trần Hưng Đạo và học may. Đến hai mươi tuổi bà đã có máy may riêng, và đến hai mươi lăm tuổi thì có một tiệm nhỏ, với tấm bảng do chính tay chồng bà vẽ.",
+          "Điều bà nhớ nhất về thành phố là tiếng ồn: tiếng chuông xe đạp, tiếng mấy ông xích lô gọi khách, tiếng radio ở mọi cửa nhà. Chiều chiều cả nhà đi dạo bến Bạch Đằng hóng gió."
+        ],
+        "figures": [
+          "Tiệm may, khoảng năm 1972. (Hình mẫu.)"
+        ]
+      },
+      {
+        "title": "Ra đi trong đêm",
+        "era": "Vượt biên",
+        "paragraphs": [
+          "Họ ra đi trong đêm tối từ một con kênh gần Rạch Giá, bốn mươi hai người trên một chiếc ghe đánh cá. Bốn ngày liền chỉ thấy nước. Sáng ngày thứ năm, một chiếc tàu đánh cá Mã Lai chỉ đường cho họ đến Pulau Bidong.",
+          "Con trai bà, lúc đó chín tuổi, lại nhớ khác: như một chuyến phiêu lưu, cho đến khi hết nước. \"Má nhường phần nước cho con,\" anh kể trong đoạn ghi âm của mình, \"mà mãi sau này con mới biết.\""
+        ],
+        "figures": []
+      }
+    ],
+    "epilogue": [
+      "Lời kết thật sẽ được viết từ những câu hỏi cuối trong máy ghi âm: những điều bà muốn các cháu biết."
+    ],
+    "timeline": [
+      "Sinh ra ở ngoại ô Mỹ Tho, con thứ tư trong bảy anh chị em",
+      "Lên Sài Gòn học may",
+      "Vượt biên từ Rạch Giá cùng 42 người",
+      "Sống ở trại tị nạn Pulau Bidong"
+    ],
+    "places": [
+      "Thị xã ven sông nơi bà sinh ra và lớn lên.",
+      "Nhánh sông Cửu Long chảy ngang nhà bà.",
+      "Nơi bà học may và mở tiệm.",
+      "Bờ biển nơi họ ra đi trong đêm.",
+      "Trại tị nạn trên đảo, nơi họ chờ một nước nhận cho định cư."
+    ],
+    "people": [
+      {
+        "relation": "ông ngoại",
+        "note": "Dẫn bà ra vườn và lên chùa; người bà theo khắp nơi."
+      },
+      {
+        "relation": "dì",
+        "note": "Cho bà ở nhờ ở Sài Gòn và dạy bà may."
+      }
+    ]
   },
   "recordings": {},
-  "storytellers": [{"id": "p1", "name": "Bà", "addr": "Bà"}],
-  "written_at": "2026-10-23T12:00:00"
+  "storytellers": [
+    {
+      "id": "p1",
+      "name": "Bà",
+      "addr": "Bà"
+    }
+  ],
+  "written_at": "2026-10-23T12:00:00",
+  "photos": {
+    "sample-river": {
+      "file": "photos/sample-river.jpg",
+      "original": "photos/sample-river.jpg",
+      "caption_en": "The river behind the house.",
+      "caption_vi": "Dòng sông sau nhà.",
+      "date": "1950s",
+      "place": "Mỹ Tho",
+      "credit": "Family album",
+      "link": ""
+    },
+    "sample-shop": {
+      "file": "photos/sample-shop.jpg",
+      "original": "photos/sample-shop.jpg",
+      "caption_en": "The sewing shop.",
+      "caption_vi": "Tiệm may.",
+      "date": "c. 1972",
+      "place": "Sài Gòn",
+      "credit": "Family album",
+      "link": ""
+    },
+    "sample-boat": {
+      "file": "photos/sample-boat.jpg",
+      "original": "photos/sample-boat.jpg",
+      "caption_en": "A boat like the one they left on. (Sample picture.)",
+      "caption_vi": "Một chiếc ghe giống chiếc họ đã đi. (Hình mẫu.)",
+      "date": "1979",
+      "place": "Rạch Giá",
+      "credit": "Example credit: Wikimedia Commons, CC BY-SA",
+      "link": "https://commons.wikimedia.org/"
+    }
+  }
 }

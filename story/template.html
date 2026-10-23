@@ -74,6 +74,19 @@ blockquote { margin: 44px 0; padding: 0 0 0 26px; border-left: 2px solid var(--l
 blockquote .sp { font-size: 27px; line-height: 1.34; font-style: italic; margin: 0; text-wrap: pretty; }
 blockquote .tr { font-family: var(--font-ui); font-size: 15.5px; line-height: 1.55; color: var(--muted); margin: 12px 0 0; }
 
+figure { margin: 44px -2rem; }
+figure a.img { display: block; background: var(--wash); border-radius: 6px; overflow: hidden; }
+figure img { display: block; width: 100%; height: auto; max-height: 80vh; object-fit: contain; }
+figcaption { font-family: var(--font-ui); font-size: 14.5px; line-height: 1.55; color: var(--muted); margin: 12px 2rem 0; }
+figcaption .cr { display: block; font-size: 12.5px; letter-spacing: .03em; margin-top: 4px; color: #8a909c; }
+figcaption a { color: inherit; }
+.prose a, .place a, .w a { color: var(--navy); text-decoration-color: rgba(31,59,77,.35); text-underline-offset: 3px; }
+.prose a:hover { color: var(--lacquer); }
+.album { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 28px 18px; }
+.album figure { margin: 0; }
+.album img { aspect-ratio: 4 / 3; object-fit: cover; }
+.album figcaption { margin: 10px 0 0; }
+.place .more { display: inline-block; font-family: var(--font-ui); font-size: 13px; margin-top: 10px; }
 section.part { padding-top: 80px; }
 section.part > h2 { font-weight: 400; font-size: clamp(32px, 5.5vw, 42px); text-align: center; margin: 8px 0 40px; }
 .part-label { text-align: center; }
@@ -130,6 +143,8 @@ footer { text-align: center; font-family: var(--font-ui); font-size: 13px; color
   blockquote .sp { font-size: 23px; }
   .contents .e { display: none; }
   .contents a { grid-template-columns: 2.2em 1fr; }
+  figure { margin: 36px 0; }
+  figcaption { margin: 10px 0 0; }
 }
 @media print {
   .bar, .player, .listen { display: none !important; }
@@ -175,6 +190,10 @@ const UI = {
   about: ["c.", "khoảng"],
   foot: ["Written from {n} recordings · {date}", "Viết từ {n} đoạn ghi âm · {date}"],
   unknown: ["Elsewhere", "Nơi khác"],
+  album: ["Family album", "Album gia đình"],
+  albumLabel: ["More pictures", "Thêm hình ảnh"],
+  source: ["source", "nguồn"],
+  more: ["Read more ↗", "Đọc thêm ↗"],
 };
 const NUM = [["One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen"],
              ["Một","Hai","Ba","Bốn","Năm","Sáu","Bảy","Tám","Chín","Mười","Mười một","Mười hai","Mười ba","Mười bốn","Mười lăm"]];
@@ -210,10 +229,22 @@ function listenBtn(ids) {
   return b;
 }
 
+// Paragraphs may carry [words](https://...) links; build them as elements, never as HTML.
+function linked(target, text) {
+  const re = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
+  let last = 0, m;
+  while ((m = re.exec(text))) {
+    target.append(text.slice(last, m.index));
+    const a = el("a", "", m[1]); a.href = m[2]; a.target = "_blank"; a.rel = "noopener";
+    target.appendChild(a); last = re.lastIndex;
+  }
+  target.append(text.slice(last));
+  return target;
+}
+
 function para(container, text, sources, first) {
   for (const [i, chunk] of String(text).split(/\n{2,}/).entries()) {
-    const p = el("p", first && i === 0 ? "first" : "", chunk.replace(/\*\*/g, ""));
-    container.appendChild(p);
+    container.appendChild(linked(el("p", first && i === 0 ? "first" : ""), chunk.replace(/\*\*/g, "")));
   }
   const b = listenBtn(sources);
   if (b) container.lastChild.appendChild(b);
@@ -227,6 +258,7 @@ function render() {
   const en = STORY.en;
   const main = $("top"); main.innerHTML = "";
   const elder = (STORY.storytellers && STORY.storytellers[0]) || {};
+  placed.clear();
 
   const cover = el("header", "cover");
   cover.appendChild(el("p", "eyebrow", t("told", { name: elder.name || "" })));
@@ -244,9 +276,10 @@ function render() {
     a.append(el("span", "t", V(["chapters", i, "title"], ch.title)), el("span", "e", years(ch.year_start, ch.year_end)));
     li.appendChild(a); ol.appendChild(li);
   });
-  const extras = [["timeline", "timeline"], ["places", "places"], ["people", "people"], ["ask", "open_questions"]];
+  const extras = [["album", null], ["timeline", "timeline"], ["places", "places"], ["people", "people"], ["ask", "open_questions"]];
+  const used = new Set(en.chapters.flatMap(ch => (ch.figures || []).map(f => f.photo)));
   for (const [k, field] of extras) {
-    if (!(en[field] || []).length) continue;
+    if (field ? !(en[field] || []).length : !Object.keys(STORY.photos || {}).some(id => !used.has(id))) continue;
     const li = el("li"); const a = el("a", "x"); a.href = `#${k}`;
     a.appendChild(el("span", "t", t(k))); li.appendChild(a); ol.appendChild(li);
   }
@@ -273,9 +306,14 @@ function render() {
     // Spread the chapter's quotes through it rather than stacking them at the end.
     const every = quotes.length ? Math.max(2, Math.ceil(ch.paragraphs.length / (quotes.length + 1))) : Infinity;
     let qi = 0;
+    const figs = (ch.figures || []).map((f, k) => ({ ...f, caption: V(["chapters", i, "figures", k], f.caption) }));
+    for (const f of figs) placed.add(f.photo);
+    figs.filter(f => f.after_paragraph < 0).forEach(f => prose.appendChild(figure(f.photo, f.caption)));
     ch.paragraphs.forEach((p, j) => {
       const text = viParas && viParas[j] ? viParas[j] : p.text;
       para(prose, text, p.sources, j === 0);
+      figs.filter(f => f.after_paragraph === j || (j === ch.paragraphs.length - 1 && f.after_paragraph > j))
+        .forEach(f => prose.appendChild(figure(f.photo, f.caption)));
       if ((j + 1) % every === 0 && qi < quotes.length && j < ch.paragraphs.length - 1) prose.appendChild(quote(quotes[qi++]));
     });
     while (qi < quotes.length) prose.appendChild(quote(quotes[qi++]));
@@ -291,6 +329,14 @@ function render() {
     main.appendChild(s);
   }
 
+  const rest = Object.keys(STORY.photos || {}).filter(id => !placed.has(id));
+  if (rest.length) {
+    const s = part("album", t("albumLabel"), t("album"), "wide");
+    const grid = el("div", "album");
+    for (const id of rest) grid.appendChild(figure(id, null));
+    s.appendChild(grid); main.appendChild(s);
+  }
+
   if ((en.timeline || []).length) {
     const s = part("timeline", t("timelineLabel"), t("timeline"), "col");
     const list = el("ol", "tl");
@@ -298,7 +344,7 @@ function render() {
       const li = el("li");
       const y = el("div", "y", e.year != null ? String(e.year) + (e.year_end && e.year_end !== e.year ? "–" + String(e.year_end).slice(-2) : "") : "·");
       if (e.approximate && e.year != null) y.appendChild(el("small", "", t("about")));
-      const w = el("div", "w", V(["timeline", i], e.label));
+      const w = linked(el("div", "w"), V(["timeline", i], e.label));
       const meta = [e.year == null ? e.when : "", e.place].filter(Boolean).join(" · ");
       if (meta) w.appendChild(el("span", "meta", meta));
       const b = listenBtn(e.sources); if (b) w.appendChild(b);
@@ -322,6 +368,7 @@ function render() {
         c.appendChild(el("div", "k", [p.kind, p.admin_area].filter(Boolean).join(" · ")));
         c.appendChild(el("p", "", V(["places", i], p.note)));
         if (p.period) c.appendChild(el("div", "per", p.period));
+        if (p.link && /^https?:\/\//.test(p.link)) { const a = el("a", "more", t("more")); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; c.appendChild(a); }
         grid.appendChild(c);
       }
     }
@@ -358,6 +405,29 @@ function render() {
   const n = Object.keys(STORY.recordings || {}).length;
   const date = STORY.written_at ? new Date(STORY.written_at).toLocaleDateString(lang === "vi" ? "vi-VN" : "en-US", { year: "numeric", month: "long", day: "numeric" }) : "";
   $("foot").textContent = t("foot", { n, date });
+}
+
+const placed = new Set();
+
+function figure(id, caption) {
+  const ph = (STORY.photos || {})[id];
+  if (!ph) return document.createComment("missing picture " + id);
+  const f = el("figure");
+  const a = el("a", "img"); a.href = ph.original || ph.file; a.target = "_blank"; a.rel = "noopener";
+  const img = el("img"); img.src = ph.file; img.loading = "lazy"; img.decoding = "async";
+  const own = lang === "vi" ? (ph.caption_vi || ph.caption_en) : (ph.caption_en || ph.caption_vi);
+  img.alt = own || caption || "";
+  a.appendChild(img); f.appendChild(a);
+  const cap = el("figcaption");
+  linked(cap, caption || own || "");
+  const credit = [[ph.date, ph.place].filter(Boolean).join(", "), ph.credit].filter(Boolean).join(" · ");
+  if (credit || ph.link) {
+    const cr = el("span", "cr", credit);
+    if (ph.link && /^https?:\/\//.test(ph.link)) { const l = el("a", "", t("source")); l.href = ph.link; l.target = "_blank"; l.rel = "noopener"; if (credit) cr.append(" · "); cr.appendChild(l); }
+    cap.appendChild(cr);
+  }
+  f.appendChild(cap);
+  return f;
 }
 
 function quote(q) {

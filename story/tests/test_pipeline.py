@@ -59,25 +59,56 @@ class PipelineTest(unittest.TestCase):
             self.asked.append((system, content))
             if schema is kechuyen.POLISH_SCHEMA:
                 return fake_polish_answer(content)
+            if schema is kechuyen.PHOTO_SCHEMA:
+                return {"photos_on_page": 2, "handwriting": "Mỹ Tho 1956", "description": "Two prints on an album page.",
+                        "caption_en": "Children by the river", "caption_vi": "Trẻ con bên sông", "date": "1956",
+                        "place": "Mỹ Tho", "people": "three children"}
             if schema is kechuyen.STORY_SCHEMA:
-                return SAMPLE["en"]
+                story = json.loads(json.dumps(SAMPLE["en"]))
+                pid = json.loads((self.tmp / "out" / "media.json").read_text("utf-8"))["photos"][0]["id"]
+                story["chapters"][0]["figures"] = [{"photo": pid, "after_paragraph": 0, "caption": "By the river"},
+                                                   {"photo": "made-up", "after_paragraph": 1, "caption": "x"}]
+                story["chapters"][0]["paragraphs"][1]["text"] += " See [a page](https://example.invalid/nope)."
+                return story
             return SAMPLE["vi"]
         kechuyen.ask_claude = fake_claude
 
     def run_cli(self, *args):
         kechuyen.main(["--out", str(self.tmp / "out"), *args])
 
+    def add_photo(self):
+        from PIL import Image
+        folder = self.tmp / "album"
+        folder.mkdir()
+        Image.new("RGB", (3000, 2000), (180, 160, 120)).save(folder / "IMG_0001.jpg")
+        (folder / ".DS_Store").write_bytes(b"junk")
+        self.run_cli("photos", str(folder))
+        self.run_cli("photos", str(folder))  # the same picture twice is added once
+
     def test_all(self):
         import os
         os.environ.setdefault("OPENAI_API_KEY", "test")
         os.environ.setdefault("ANTHROPIC_API_KEY", "test")
-        self.run_cli("all", str(self.zip))
+        kechuyen.link_works = lambda url, cache: "wikipedia.org" in url
+        self.add_photo()
         out = self.tmp / "out"
+        media = json.loads((out / "media.json").read_text("utf-8"))
+        self.assertEqual(len(media["photos"]), 1)
+        ph = media["photos"][0]
+        self.assertIn("separate shot", ph["description"])
+        from PIL import Image
+        self.assertEqual(max(Image.open(out / ph["file"]).size), kechuyen.WEB_SIZE)
+        md = (out / "photos.md").read_text("utf-8")
+        self.assertIn("Caption: Children by the river", md)
+        (out / "photos.md").write_text(md.replace("People: three children", "People: Bà, Dì Tư and Cậu Ba")
+                                       .replace("Where in the story:", "Where in the story: childhood by the river"), "utf-8")
+        self.run_cli("all", str(self.zip))
         self.assertFalse((self.tmp / "escape.txt").exists())
         self.assertEqual(len(self.heard), 2)
         # The reply was cleaned up knowing what its parent recording said.
-        self.assertIn("adds to an earlier answer", self.asked[1][1])
-        self.assertIn("Mỹ Tho", self.asked[1][1])  # glossary carried across recordings
+        polished = [c for s_, c in self.asked if s_ is kechuyen.POLISH_SYSTEM]
+        self.assertIn("adds to an earlier answer", polished[1])
+        self.assertIn("Mỹ Tho", polished[1])  # glossary carried across recordings
         md = (out / "transcripts" / f"{RECS[0]['id']}.md").read_text("utf-8")
         self.assertIn("## As told", md)
         self.assertIn("../audio/", md)
@@ -87,6 +118,16 @@ class PipelineTest(unittest.TestCase):
         self.assertIn("<title>The River and the Sea</title>", html)
         self.assertNotIn("/*STORY_DATA*/", html)
         self.assertTrue((out / "audio" / RECS[0]["filename"]).exists())
+        # Pictures: the family's edits reach the writer, unknown pictures and dead links are dropped.
+        weave_prompt = next(c for s_, c in self.asked if s_ is kechuyen.WEAVE_SYSTEM)
+        self.assertIn("Bà, Dì Tư and Cậu Ba", weave_prompt)
+        self.assertIn("childhood by the river", weave_prompt)
+        figs = story["en"]["chapters"][0]["figures"]
+        self.assertEqual([f["photo"] for f in figs], [ph["id"]])
+        self.assertNotIn("example.invalid", json.dumps(story))
+        self.assertIn("[Tiền River](https://en.wikipedia.org", json.dumps(story, ensure_ascii=False))
+        self.assertIn(ph["id"], story["photos"])
+        self.assertTrue((out / "pictures-to-find.md").exists())
 
         # Running again does not listen again, and hand corrections reach the story.
         md_path = out / "transcripts" / f"{RECS[0]['id']}.md"
