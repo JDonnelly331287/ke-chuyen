@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Life story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Be+Vietnam+Pro:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #ffffff;
+  --wash: #f7f6f3;
+  --ink: #1b2230;
+  --muted: #697080;
+  --line: #e4e2dc;
+  --navy: #1f3b4d;
+  --lacquer: #8c1d2a;
+  --gold: #a5844f;
+  --font-display: "EB Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-ui: "Be Vietnam Pro", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --measure: 34rem;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-display); font-size: 21px; line-height: 1.62; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+a { color: var(--navy); }
+
+.bar { position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.bar-in { max-width: 60rem; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: var(--font-ui); }
+.brand { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lang { border: 1px solid var(--ink); background: var(--bg); border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 500; letter-spacing: .04em; white-space: nowrap; }
+.lang:hover { background: var(--ink); color: var(--bg); }
+
+main { padding: 0 16px 120px; }
+.col { max-width: var(--measure); margin: 0 auto; }
+.wide { max-width: 52rem; margin: 0 auto; }
+
+.cover { text-align: center; padding: 15vh 0 10vh; }
+.eyebrow { font-family: var(--font-ui); font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin: 0 0 22px; }
+.cover h1 { font-weight: 400; font-size: clamp(44px, 9vw, 76px); line-height: 1.04; margin: 0 auto; max-width: 15ch; text-wrap: balance; letter-spacing: -.005em; }
+.cover .sub { font-style: italic; font-size: clamp(21px, 3.4vw, 26px); color: var(--muted); margin: 22px auto 0; max-width: 28ch; text-wrap: balance; }
+.rule { width: 56px; height: 1px; background: var(--gold); margin: 40px auto; border: 0; }
+.dedication { font-style: italic; color: var(--muted); max-width: 26ch; margin: 0 auto; text-wrap: balance; }
+
+.contents { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 36px 0 30px; margin: 0 auto 72px; }
+.label { font-family: var(--font-ui); font-size: 12.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin: 0 0 18px; }
+.contents ol { list-style: none; margin: 0; padding: 0; counter-reset: ch; }
+.contents li { counter-increment: ch; }
+.contents a { display: grid; grid-template-columns: 2.2em 1fr auto; gap: 6px 10px; align-items: baseline; padding: 9px 0; text-decoration: none; color: var(--ink); border-bottom: 1px dotted var(--line); }
+.contents a::before { content: counter(ch, upper-roman) "."; color: var(--gold); font-size: 17px; }
+.contents a:hover .t { color: var(--lacquer); }
+.contents .e { font-family: var(--font-ui); font-size: 13px; color: var(--muted); white-space: nowrap; }
+.contents .x { grid-template-columns: 2.2em 1fr; }
+.contents .x::before { content: ""; }
+
+.prose p { margin: 0 0 1.05em; hyphens: auto; }
+.prose p.first::first-letter { float: left; font-size: 3.55em; line-height: .86; padding: .06em .09em 0 0; color: var(--lacquer); }
+.listen { font-family: var(--font-ui); font-size: 12px; border: 0; background: none; color: var(--gold); padding: 0 2px; margin-left: 3px; vertical-align: .18em; letter-spacing: .04em; }
+.listen:hover { color: var(--lacquer); }
+
+.chapter { padding: 64px 0 24px; }
+.ch-head { text-align: center; margin-bottom: 40px; }
+.ch-num { font-family: var(--font-ui); font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+.ch-head h2 { font-weight: 400; font-size: clamp(34px, 6vw, 46px); line-height: 1.1; margin: 12px auto 10px; text-wrap: balance; max-width: 18ch; }
+.ch-era { font-style: italic; color: var(--muted); }
+.ornament { text-align: center; color: var(--gold); letter-spacing: .6em; margin: 40px 0; font-size: 15px; }
+
+blockquote { margin: 44px 0; padding: 0 0 0 26px; border-left: 2px solid var(--lacquer); }
+blockquote .sp { font-size: 27px; line-height: 1.34; font-style: italic; margin: 0; text-wrap: pretty; }
+blockquote .tr { font-family: var(--font-ui); font-size: 15.5px; line-height: 1.55; color: var(--muted); margin: 12px 0 0; }
+
+figure { margin: 44px -2rem; }
+figure a.img { display: block; background: var(--wash); border-radius: 6px; overflow: hidden; }
+figure img { display: block; width: 100%; height: auto; max-height: 80vh; object-fit: contain; }
+figcaption { font-family: var(--font-ui); font-size: 14.5px; line-height: 1.55; color: var(--muted); margin: 12px 2rem 0; }
+figcaption .cr { display: block; font-size: 12.5px; letter-spacing: .03em; margin-top: 4px; color: #8a909c; }
+figcaption a { color: inherit; }
+.prose a, .place a, .w a { color: var(--navy); text-decoration-color: rgba(31,59,77,.35); text-underline-offset: 3px; }
+.prose a:hover { color: var(--lacquer); }
+.album { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 28px 18px; }
+.album figure { margin: 0; }
+.album img { aspect-ratio: 4 / 3; object-fit: cover; }
+.album figcaption { margin: 10px 0 0; }
+.place .more { display: inline-block; font-family: var(--font-ui); font-size: 13px; margin-top: 10px; }
+section.part { padding-top: 80px; }
+section.part > h2 { font-weight: 400; font-size: clamp(32px, 5.5vw, 42px); text-align: center; margin: 8px 0 40px; }
+.part-label { text-align: center; }
+
+.tl { list-style: none; margin: 0; padding: 0; position: relative; }
+.tl::before { content: ""; position: absolute; left: 6.4rem; top: 6px; bottom: 6px; width: 1px; background: var(--line); }
+.tl li { display: grid; grid-template-columns: 5.6rem 1fr; gap: 1.6rem; padding: 0 0 26px; position: relative; }
+.tl li::after { content: ""; position: absolute; left: calc(6.4rem - 4px); top: 11px; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--gold); }
+.tl .y { text-align: right; white-space: nowrap; font-size: 22px; color: var(--navy); font-variant-numeric: oldstyle-nums; line-height: 1.3; }
+.tl .y small { display: block; font-family: var(--font-ui); font-size: 11.5px; color: var(--muted); letter-spacing: .06em; }
+.tl .w { line-height: 1.45; }
+.tl .meta { display: block; font-family: var(--font-ui); font-size: 13.5px; color: var(--muted); margin-top: 4px; }
+
+.places { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 14px; }
+.country { grid-column: 1 / -1; font-family: var(--font-ui); font-size: 12.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin: 22px 0 2px; }
+.country:first-child { margin-top: 0; }
+.place { border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; background: var(--bg); }
+.place h3 { font-weight: 500; font-size: 23px; line-height: 1.2; margin: 0; }
+.place .alt { font-style: italic; color: var(--muted); font-size: 17px; }
+.place .k { font-family: var(--font-ui); font-size: 12.5px; color: var(--muted); letter-spacing: .05em; margin: 6px 0 10px; }
+.place p { margin: 0; font-size: 17.5px; line-height: 1.5; }
+.place .per { font-family: var(--font-ui); font-size: 13px; color: var(--navy); margin-top: 10px; }
+
+.people { columns: 2 16rem; column-gap: 2.4rem; }
+.person { break-inside: avoid; padding: 0 0 18px; }
+.person b { font-weight: 500; }
+.person .r { font-family: var(--font-ui); font-size: 13px; color: var(--gold); letter-spacing: .05em; margin-left: 6px; }
+.person p { margin: 2px 0 0; font-size: 18px; color: var(--muted); line-height: 1.5; }
+
+.ask { background: var(--wash); border-radius: 16px; padding: 28px 26px; }
+.ask p.intro { font-family: var(--font-ui); font-size: 15.5px; color: var(--muted); margin: 0 0 18px; }
+.ask ol { margin: 0; padding-left: 1.3em; }
+.ask li { margin: 0 0 16px; }
+.ask li::marker { color: var(--gold); }
+.ask .why { display: block; font-family: var(--font-ui); font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+
+footer { text-align: center; font-family: var(--font-ui); font-size: 13px; color: var(--muted); padding: 80px 16px 40px; }
+
+.player { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(36rem, calc(100% - 32px)); background: var(--ink); color: #fff; border-radius: 16px; padding: 14px 16px; display: flex; gap: 14px; align-items: center; font-family: var(--font-ui); box-shadow: 0 10px 30px rgba(27,34,48,.22); z-index: 10; }
+.player .pp { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--lacquer); color: #fff; flex: none; font-size: 16px; }
+.player .q { flex: 1; min-width: 0; font-size: 14px; line-height: 1.35; }
+.player .q small { display: block; color: #b9bfcc; font-size: 12px; letter-spacing: .06em; margin-bottom: 2px; }
+.player .q span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.player .x { border: 0; background: none; color: #b9bfcc; font-size: 22px; padding: 4px 6px; }
+.player .bar2 { position: absolute; left: 16px; right: 16px; bottom: 6px; height: 2px; background: rgba(255,255,255,.15); border-radius: 2px; overflow: hidden; }
+.player .bar2 i { display: block; height: 100%; width: 0; background: var(--gold); }
+
+@media (max-width: 560px) {
+  body { font-size: 19.5px; }
+  .tl::before { left: 4.9rem; }
+  .tl li { grid-template-columns: 4.3rem 1fr; gap: 1.2rem; }
+  .tl li::after { left: calc(4.9rem - 4px); }
+  .tl .y { font-size: 18px; }
+  blockquote .sp { font-size: 23px; }
+  .contents .e { display: none; }
+  .contents a { grid-template-columns: 2.2em 1fr; }
+  figure { margin: 36px 0; }
+  figcaption { margin: 10px 0 0; }
+}
+@media print {
+  .bar, .player, .listen { display: none !important; }
+  body { font-size: 12pt; }
+  .chapter { break-before: page; }
+  .cover { padding: 30vh 0; break-after: page; }
+}
+</style>
+</head>
+<body>
+<div class="bar"><div class="bar-in"><a class="brand" href="#top" id="brand"></a><button class="lang" id="lang" type="button"></button></div></div>
+<main id="top"></main>
+<footer id="foot"></footer>
+<div class="player" id="player" hidden>
+  <button class="pp" id="pp" type="button" aria-label="Play or pause">▶</button>
+  <div class="q"><small id="pWho"></small><span id="pQ"></span></div>
+  <button class="x" id="px" type="button" aria-label="Close">×</button>
+  <div class="bar2"><i id="pBar"></i></div>
+</div>
+<audio id="audio" preload="none"></audio>
+<script>
+const STORY = /*STORY_DATA*/null;
+
+const UI = {
+  brand: ["Kể Chuyện Ngày Xưa", "Kể Chuyện Ngày Xưa"],
+  toggle: ["Tiếng Việt", "English"],
+  told: ["A life, as told by {name}", "Cuộc đời, do {name} kể lại"],
+  contents: ["Contents", "Mục lục"],
+  prologue: ["Prologue", "Lời mở đầu"],
+  epilogue: ["Epilogue", "Lời kết"],
+  chapter: ["Chapter {n}", "Chương {n}"],
+  listen: ["listen", "nghe"],
+  listenTitle: ["Hear the recording this comes from", "Nghe đoạn ghi âm gốc"],
+  timeline: ["A timeline", "Dòng thời gian"],
+  timelineLabel: ["The years", "Năm tháng"],
+  places: ["Places in this story", "Những nơi chốn"],
+  placesLabel: ["The map of a life", "Bản đồ cuộc đời"],
+  people: ["People", "Những con người"],
+  peopleLabel: ["Family and friends", "Gia đình và bạn bè"],
+  ask: ["Questions for the next recording", "Câu hỏi cho lần ghi âm sau"],
+  askLabel: ["Still to tell", "Còn kể tiếp"],
+  askIntro: ["The story still has gaps. Ask these the next time you record.", "Câu chuyện vẫn còn những khoảng trống. Bạn hãy hỏi những câu này trong lần ghi âm tới."],
+  about: ["c.", "khoảng"],
+  foot: ["Written from {n} recordings · {date}", "Viết từ {n} đoạn ghi âm · {date}"],
+  unknown: ["Elsewhere", "Nơi khác"],
+  album: ["Family album", "Album gia đình"],
+  albumLabel: ["More pictures", "Thêm hình ảnh"],
+  source: ["source", "nguồn"],
+  more: ["Read more ↗", "Đọc thêm ↗"],
+};
+const NUM = [["One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen"],
+             ["Một","Hai","Ba","Bốn","Năm","Sáu","Bảy","Tám","Chín","Mười","Mười một","Mười hai","Mười ba","Mười bốn","Mười lăm"]];
+
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+let lang = store.get("kc.story.lang", null) || (STORY && STORY.vi && /^vi/i.test(navigator.language) ? "vi" : "en");
+if (!STORY || !STORY.vi) lang = "en";
+const L = () => (lang === "vi" ? 1 : 0);
+const t = (k, vars = {}) => UI[k][L()].replace(/\{(\w+)\}/g, (_, v) => vars[v] ?? "");
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+// The Vietnamese edition mirrors the English one item for item; fall back to English wherever it doesn't.
+function V(path, fallback) {
+  if (lang !== "vi" || !STORY.vi) return fallback;
+  let v = STORY.vi;
+  for (const k of path) { if (v == null) return fallback; v = v[k]; }
+  return (v == null || v === "") ? fallback : v;
+}
+
+function years(a, b, approx) {
+  if (a == null) return "";
+  const pre = approx ? t("about") + " " : "";
+  return pre + (b && b !== a ? `${a}–${b}` : `${a}`);
+}
+
+function listenBtn(ids) {
+  const id = (ids || []).find(i => STORY.recordings[i]);
+  if (!id) return null;
+  const b = el("button", "listen", "♪ " + t("listen"));
+  b.type = "button"; b.title = t("listenTitle");
+  b.onclick = () => play(id);
+  return b;
+}
+
+// Paragraphs may carry [words](https://...) links; build them as elements, never as HTML.
+function linked(target, text) {
+  const re = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
+  let last = 0, m;
+  while ((m = re.exec(text))) {
+    target.append(text.slice(last, m.index));
+    const a = el("a", "", m[1]); a.href = m[2]; a.target = "_blank"; a.rel = "noopener";
+    target.appendChild(a); last = re.lastIndex;
+  }
+  target.append(text.slice(last));
+  return target;
+}
+
+function para(container, text, sources, first) {
+  for (const [i, chunk] of String(text).split(/\n{2,}/).entries()) {
+    container.appendChild(linked(el("p", first && i === 0 ? "first" : ""), chunk.replace(/\*\*/g, "")));
+  }
+  const b = listenBtn(sources);
+  if (b) container.lastChild.appendChild(b);
+}
+
+function render() {
+  document.documentElement.lang = lang;
+  $("brand").textContent = t("brand");
+  $("lang").textContent = t("toggle");
+  $("lang").hidden = !STORY.vi;
+  const en = STORY.en;
+  const main = $("top"); main.innerHTML = "";
+  const elder = (STORY.storytellers && STORY.storytellers[0]) || {};
+  placed.clear();
+
+  const cover = el("header", "cover");
+  cover.appendChild(el("p", "eyebrow", t("told", { name: elder.name || "" })));
+  cover.appendChild(el("h1", "", V(["title"], en.title)));
+  cover.appendChild(el("p", "sub", V(["subtitle"], en.subtitle)));
+  if (en.dedication) { cover.appendChild(el("hr", "rule")); cover.appendChild(el("p", "dedication", V(["dedication"], en.dedication))); }
+  main.appendChild(cover);
+  document.title = V(["title"], en.title);
+
+  const toc = el("nav", "contents col");
+  toc.appendChild(el("p", "label", t("contents")));
+  const ol = el("ol");
+  en.chapters.forEach((ch, i) => {
+    const li = el("li"); const a = el("a"); a.href = `#ch-${i + 1}`;
+    a.append(el("span", "t", V(["chapters", i, "title"], ch.title)), el("span", "e", years(ch.year_start, ch.year_end)));
+    li.appendChild(a); ol.appendChild(li);
+  });
+  const extras = [["album", null], ["timeline", "timeline"], ["places", "places"], ["people", "people"], ["ask", "open_questions"]];
+  const used = new Set(en.chapters.flatMap(ch => (ch.figures || []).map(f => f.photo)));
+  for (const [k, field] of extras) {
+    if (field ? !(en[field] || []).length : !Object.keys(STORY.photos || {}).some(id => !used.has(id))) continue;
+    const li = el("li"); const a = el("a", "x"); a.href = `#${k}`;
+    a.appendChild(el("span", "t", t(k))); li.appendChild(a); ol.appendChild(li);
+  }
+  toc.appendChild(ol); main.appendChild(toc);
+
+  if ((en.prologue || []).length) {
+    const s = el("section", "col prose");
+    s.appendChild(el("p", "label", t("prologue")));
+    V(["prologue"], en.prologue).forEach((p, i) => para(s, p, null, i === 0));
+    main.appendChild(s);
+  }
+
+  en.chapters.forEach((ch, i) => {
+    const s = el("section", "chapter col"); s.id = `ch-${i + 1}`;
+    const h = el("div", "ch-head");
+    h.appendChild(el("div", "ch-num", t("chapter", { n: NUM[L()][i] || i + 1 })));
+    h.appendChild(el("h2", "", V(["chapters", i, "title"], ch.title)));
+    const era = [V(["chapters", i, "era"], ch.era), years(ch.year_start, ch.year_end)].filter(Boolean).join(" · ");
+    if (era) h.appendChild(el("div", "ch-era", era));
+    s.appendChild(h);
+    const prose = el("div", "prose");
+    const viParas = V(["chapters", i, "paragraphs"], null);
+    const quotes = ch.quotes || [];
+    // Spread the chapter's quotes through it rather than stacking them at the end.
+    const every = quotes.length ? Math.max(2, Math.ceil(ch.paragraphs.length / (quotes.length + 1))) : Infinity;
+    let qi = 0;
+    const figs = (ch.figures || []).map((f, k) => ({ ...f, caption: V(["chapters", i, "figures", k], f.caption) }));
+    for (const f of figs) placed.add(f.photo);
+    figs.filter(f => f.after_paragraph < 0).forEach(f => prose.appendChild(figure(f.photo, f.caption)));
+    ch.paragraphs.forEach((p, j) => {
+      const text = viParas && viParas[j] ? viParas[j] : p.text;
+      para(prose, text, p.sources, j === 0);
+      figs.filter(f => f.after_paragraph === j || (j === ch.paragraphs.length - 1 && f.after_paragraph > j))
+        .forEach(f => prose.appendChild(figure(f.photo, f.caption)));
+      if ((j + 1) % every === 0 && qi < quotes.length && j < ch.paragraphs.length - 1) prose.appendChild(quote(quotes[qi++]));
+    });
+    while (qi < quotes.length) prose.appendChild(quote(quotes[qi++]));
+    s.appendChild(prose);
+    main.appendChild(s);
+    if (i < en.chapters.length - 1) main.appendChild(el("div", "ornament", "✦ ✦ ✦"));
+  });
+
+  if ((en.epilogue || []).length) {
+    const s = el("section", "chapter col prose");
+    const h = el("div", "ch-head"); h.appendChild(el("h2", "", t("epilogue"))); s.appendChild(h);
+    V(["epilogue"], en.epilogue).forEach((p, i) => para(s, p, null, i === 0));
+    main.appendChild(s);
+  }
+
+  const rest = Object.keys(STORY.photos || {}).filter(id => !placed.has(id));
+  if (rest.length) {
+    const s = part("album", t("albumLabel"), t("album"), "wide");
+    const grid = el("div", "album");
+    for (const id of rest) grid.appendChild(figure(id, null));
+    s.appendChild(grid); main.appendChild(s);
+  }
+
+  if ((en.timeline || []).length) {
+    const s = part("timeline", t("timelineLabel"), t("timeline"), "col");
+    const list = el("ol", "tl");
+    en.timeline.forEach((e, i) => {
+      const li = el("li");
+      const y = el("div", "y", e.year != null ? String(e.year) + (e.year_end && e.year_end !== e.year ? "–" + String(e.year_end).slice(-2) : "") : "·");
+      if (e.approximate && e.year != null) y.appendChild(el("small", "", t("about")));
+      const w = linked(el("div", "w"), V(["timeline", i], e.label));
+      const meta = [e.year == null ? e.when : "", e.place].filter(Boolean).join(" · ");
+      if (meta) w.appendChild(el("span", "meta", meta));
+      const b = listenBtn(e.sources); if (b) w.appendChild(b);
+      li.append(y, w); list.appendChild(li);
+    });
+    s.appendChild(list); main.appendChild(s);
+  }
+
+  if ((en.places || []).length) {
+    const s = part("places", t("placesLabel"), t("places"), "wide");
+    const grid = el("div", "places");
+    const groups = new Map();
+    en.places.forEach((p, i) => { const c = p.country || t("unknown"); if (!groups.has(c)) groups.set(c, []); groups.get(c).push([p, i]); });
+    for (const [country, list] of groups) {
+      grid.appendChild(el("div", "country", country));
+      for (const [p, i] of list) {
+        const c = el("article", "place"); c.id = "place-" + p.id;
+        const h = el("h3", "", p.name);
+        if (p.name_en && p.name_en !== p.name) { h.append(" "); h.appendChild(el("span", "alt", p.name_en)); }
+        c.appendChild(h);
+        c.appendChild(el("div", "k", [p.kind, p.admin_area].filter(Boolean).join(" · ")));
+        c.appendChild(el("p", "", V(["places", i], p.note)));
+        if (p.period) c.appendChild(el("div", "per", p.period));
+        if (p.link && /^https?:\/\//.test(p.link)) { const a = el("a", "more", t("more")); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; c.appendChild(a); }
+        grid.appendChild(c);
+      }
+    }
+    s.appendChild(grid); main.appendChild(s);
+  }
+
+  if ((en.people || []).length) {
+    const s = part("people", t("peopleLabel"), t("people"), "col");
+    const box = el("div", "people");
+    en.people.forEach((p, i) => {
+      const d = el("div", "person");
+      d.appendChild(el("b", "", p.name));
+      const rel = V(["people", i, "relation"], p.relation);
+      if (rel) d.appendChild(el("span", "r", rel));
+      d.appendChild(el("p", "", V(["people", i, "note"], p.note)));
+      box.appendChild(d);
+    });
+    s.appendChild(box); main.appendChild(s);
+  }
+
+  if ((en.open_questions || []).length) {
+    const s = part("ask", t("askLabel"), t("ask"), "col");
+    const box = el("div", "ask");
+    box.appendChild(el("p", "intro", t("askIntro")));
+    const list = el("ol");
+    for (const q of en.open_questions) {
+      const li = el("li", "", lang === "vi" ? q.question_vi : q.question_en);
+      if (lang !== "vi" && q.why) li.appendChild(el("span", "why", q.why));
+      list.appendChild(li);
+    }
+    box.appendChild(list); s.appendChild(box); main.appendChild(s);
+  }
+
+  const n = Object.keys(STORY.recordings || {}).length;
+  const date = STORY.written_at ? new Date(STORY.written_at).toLocaleDateString(lang === "vi" ? "vi-VN" : "en-US", { year: "numeric", month: "long", day: "numeric" }) : "";
+  $("foot").textContent = t("foot", { n, date });
+}
+
+const placed = new Set();
+
+function figure(id, caption) {
+  const ph = (STORY.photos || {})[id];
+  if (!ph) return document.createComment("missing picture " + id);
+  const f = el("figure");
+  const a = el("a", "img"); a.href = ph.original || ph.file; a.target = "_blank"; a.rel = "noopener";
+  const img = el("img"); img.src = ph.file; img.loading = "lazy"; img.decoding = "async";
+  const own = lang === "vi" ? (ph.caption_vi || ph.caption_en) : (ph.caption_en || ph.caption_vi);
+  img.alt = own || caption || "";
+  a.appendChild(img); f.appendChild(a);
+  const cap = el("figcaption");
+  linked(cap, caption || own || "");
+  const credit = [[ph.date, ph.place].filter(Boolean).join(", "), ph.credit].filter(Boolean).join(" · ");
+  if (credit || ph.link) {
+    const cr = el("span", "cr", credit);
+    if (ph.link && /^https?:\/\//.test(ph.link)) { const l = el("a", "", t("source")); l.href = ph.link; l.target = "_blank"; l.rel = "noopener"; if (credit) cr.append(" · "); cr.appendChild(l); }
+    cap.appendChild(cr);
+  }
+  f.appendChild(cap);
+  return f;
+}
+
+function quote(q) {
+  const b = el("blockquote");
+  b.appendChild(el("p", "sp", "“" + q.spoken + "”"));
+  if (lang !== "vi" && q.english && q.english !== q.spoken) b.appendChild(el("p", "tr", q.english));
+  const btn = listenBtn([q.source]); if (btn) (b.lastChild).appendChild(btn);
+  return b;
+}
+
+function part(id, label, title, width) {
+  const s = el("section", "part " + width); s.id = id;
+  s.appendChild(el("p", "label part-label", label));
+  s.appendChild(el("h2", "", title));
+  return s;
+}
+
+/* ---------- listening to the source recordings ---------- */
+const audio = $("audio");
+function play(id) {
+  const r = STORY.recordings[id];
+  audio.src = "audio/" + encodeURIComponent(r.file);
+  $("pWho").textContent = [r.speaker, r.recorded].filter(Boolean).join(" · ");
+  $("pQ").textContent = lang === "vi" ? (r.question_vi || r.question_en) : (r.question_en || r.question_vi);
+  $("player").hidden = false;
+  audio.play().catch(() => { $("pp").textContent = "▶"; });
+}
+audio.onplay = () => { $("pp").textContent = "❚❚"; };
+audio.onpause = () => { $("pp").textContent = "▶"; };
+audio.ontimeupdate = () => { $("pBar").style.width = audio.duration ? (100 * audio.currentTime / audio.duration) + "%" : "0"; };
+$("pp").onclick = () => (audio.paused ? audio.play() : audio.pause());
+$("px").onclick = () => { audio.pause(); $("player").hidden = true; };
+
+$("lang").onclick = () => { lang = lang === "vi" ? "en" : "vi"; store.set("kc.story.lang", lang); render(); };
+
+if (STORY) render(); else $("top").textContent = "No story yet.";
+</script>
+</body>
+</html>
